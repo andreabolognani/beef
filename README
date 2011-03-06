@@ -1,0 +1,39 @@
+# beef README
+
+################
+# Installation #
+################
+
+To compile beef, type `make'. If everything goes well, you'll have a file
+called `beef' in the current directory -- that is beef's binary.
+
+To install it in the system-wide bin directory, make sure you are root, then
+type `make install': this will install the man page and the documentation as
+well.
+
+The default prefix is /usr, so beef will be placed in /usr/bin: if you want
+beef to be installed in another directory, use
+`make install PREFIX=/path/to/dir' -- the man page will be placed in
+/usr/share/man/man1 no matter what is the value of PREFIX. The available
+documentation will be installed into /usr/share/doc/beef.
+
+If you don't like this setting, then you probably don't like the HFS too, but
+you can change them anyway editing the first few lines of the Makefile.
+
+If you are using Debian (or a Debian-based distro such as Ubuntu), you can get
+beef from the main archive. Please note the packaged version is probably older
+than the current one.
+
+#########
+# Usage #
+#########
+
+See `man beef' or `beef --help' for more informations on beef's usage. It's
+really simple, anyway.
+
+##########
+# Author #
+##########
+
+beef is Copyright (C) 2005-2007 KiyuKo <eof AT kiyuko.org>
+Homepage: http://www.kiyuko.org/beef

@@ -1,0 +1,56 @@
+.TH BEEF 1 "February 01, 2007" "0.0.6" "User Commands"
+
+.SH NAME
+beef \- flexible Brainfuck interpreter
+
+.SH SYNOPSIS
+\fBbeef\fR [\fIOPTIONS\fR] \fIFILE\fR
+
+.SH DESCRIPTION
+\fBbeef\fR is a Brainfuck interpreter written in C. It is written with
+flexibility and portability in mind: it is not the smallest nor the fastest
+Brainfuck interpreter on Earth, but it has some options to control his
+behavior and doesn't suffer most of the limitations which are usually present
+in Brainfuck interpreters.
+.PP
+One of the best features of \fBbeef\fR is that it has no limitations on the
+length of the tape, which is created dinamically, and allows you to move in any
+direction, even to move an unlimited amount of cells left when you are on the
+starting cell.
+.PP
+\fBbeef\fR also allows you to control his behavior in case it reads and EOF
+from the input stream: see below for a list of available options.
+
+.SH OPTIONS
+.TP
+\fB\-d\fR
+Enable debugging. The debugging command \fB#\fR is not part of the
+Brainfuck language, but it's an useful feature for the programmer, so most
+interpreters implement it. Debugging is off by default.
+.TP
+\fB\-e\fR
+When read an EOF from input, store an EOF in the current cell. This is for
+compatibility with programs written for other interpreters; the default
+behavior is to store a 0 in the current cell when an EOF is read.
+.TP
+\fB\-n\fR
+When read an EOF from input, do nothing. This is the default behavior in some
+other interpreters, so it's supported in \fBbeef\fR for compatibility reasons.
+The default behavior is to store a 0 on the current cell instead.
+.TP
+\fB\-\-version\fR
+Show the version number and exit successfully.
+.TP
+\fB\-\-help\fR
+Show a short help message and exit with success.
+
+.SH EXIT STATUS
+\fBbeef\fR returns an exit staus of zero on success, or an exit status of \-1
+if it was unable to perform the requested operation.
+.PP
+Please note that no checks are performed on the code: if the code you are
+trying to run is buggy, \fBbeef\fR will run it anyway and the result will
+probably differ from what you expected.
+
+.SH AUTHOR
+This manual page was written by KiyuKo <eof AT kiyuko DOT org>

@@ -1,0 +1,41 @@
+# beef changelog
+
+beef 0.0.6 (2007-02-01)
+
+  * Modified code loader to ignore the shebang line if present
+  * Fixed some spelling errors in the man page and in the help message
+  * Minor code cleanups
+
+beef 0.0.5 (2006-03-24)
+
+  * Improved code loader and runner (taken from bf.c by Erik Bosman)
+  * Modified Makefile to be more easily configurable
+  * Added more comments to the code
+  * Fixed some bad English in the man page
+  * General cleanups
+
+beef 0.0.4 (2006-03-10)
+
+  * Added code loader for faster execution
+  * Debug disabled by default
+  * Enabled optimization in the Makefile
+  * Fixed Makefile (install won't fail anymore if $DOCDIR already exists)	
+  * Fixed man page
+
+beef 0.0.3 (2005-12-14)
+
+  * First released version
+  * Added command line options to control beef's behavior
+  * Added --version option to display version number
+  * Fixed Makefile (now has an install target and some nice output)
+  * Added man page
+
+beef 0.0.2 (2005-12)
+
+  * Added support for debugging command (#)
+  * Added --help options to display a short help
+  * New (shorter) name for functions and vars
+
+beef 0.0.1 (2005-11)
+
+  * First version, not released

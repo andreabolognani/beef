@@ -24,11 +24,17 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gio/gio.h>
+#include <cattle/cattle.h>
 
 G_BEGIN_DECLS
 
-gchar* load_file_contents (GFile   *file,
-                           GError **error);
+gchar*   load_file_contents (GFile              *file,
+                             GError            **error);
+
+gboolean output_handler     (CattleInterpreter  *interpreter,
+                             gchar               output,
+                             gpointer            data,
+                             GError            **error);
 
 G_END_DECLS
 

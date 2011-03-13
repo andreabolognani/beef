@@ -35,8 +35,10 @@ parse_store (const gchar  *option_name,
              GError      **error)
 {
 	CattleConfiguration *configuration;
+	OptionValues *option_values;
 
-	configuration = CATTLE_CONFIGURATION (data);
+	option_values = (OptionValues*) data;
+	configuration = option_values->configuration;
 
 	if (g_utf8_collate (value, "zero") == 0) {
 
@@ -80,8 +82,10 @@ parse_debugging (const gchar *option_name,
                  GError      **error)
 {
 	CattleConfiguration *configuration;
+	OptionValues *option_values;
 
-	configuration = CATTLE_CONFIGURATION (data);
+	option_values = (OptionValues*) data;
+	configuration = option_values->configuration;
 
 	if (value == NULL) {
 
@@ -116,12 +120,48 @@ parse_debugging (const gchar *option_name,
 }
 
 /**
+ * parse_output_filename:
+ *
+ * Parse the argument for the --output-file option.
+ */
+static gboolean
+parse_output_filename (const gchar  *option_name,
+                       const gchar  *value,
+                       gpointer      data,
+                       GError      **error)
+{
+	OptionValues *option_values;
+
+	option_values = (OptionValues*) data;
+
+	if (g_utf8_collate (value, "-") == 0) {
+
+		option_values->output_filename = NULL;
+	}
+	else {
+
+		option_values->output_filename = g_strdup (value);
+	}
+
+	return TRUE;
+}
+
+/**
  * entries:
  *
  * Commandline options definition.
  */
 GOptionEntry entries[N_OPTIONS + 1] =
 {
+	{
+		"output-file",
+		'o',
+		G_OPTION_FLAG_FILENAME,
+		G_OPTION_ARG_CALLBACK,
+		parse_output_filename,
+		"Output filename",
+		"FILE"
+	},
 	{
 		"enable-debugging",
 		'd',

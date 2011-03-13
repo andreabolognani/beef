@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <gio/gio.h>
 #include <cattle/cattle.h>
 #include <config.h>
 #include "io.h"
@@ -27,10 +28,11 @@
 
 /**
  * display_error:
- * @context: (allow-none): file path
+ * @context: (allow-none): error context
  * @message: error message
  *
- * Display an error encountered by @program while processing @file.
+ * Display an error encountered by @program while performing an action
+ * in @context (usually a file).
  */
 void
 display_error (const gchar *context,
@@ -60,27 +62,26 @@ main (gint    argc,
 {
 	CattleInterpreter *interpreter;
 	CattleProgram *program;
-	CattleConfiguration *configuration;
 	GFile *file;
+	GFileOutputStream *output_stream;
 	GOptionContext *context;
 	GOptionGroup *group;
 	GError *error;
-	gchar *program_name;
+	OptionValues *option_values;
 	gchar *contents;
 	gboolean success;
 
 	g_set_prgname ("beef");
 	g_type_init ();
 
-	program_name = argv[0];
-
 	/* Set up a configuration group for commanline options */
-	configuration = cattle_configuration_new ();
+	option_values = g_new0 (OptionValues, 1);
+	option_values->configuration = cattle_configuration_new ();
 	context = g_option_context_new ("FILE - Flexible Brainfuck interpreter");
 	group = g_option_group_new ("",
 	                            "",
 	                            "",
-	                            configuration,
+	                            option_values,
 	                            NULL);
 	g_option_group_add_entries (group, entries);
 	g_option_context_set_main_group (context, group);
@@ -124,7 +125,6 @@ main (gint    argc,
 
 	interpreter = cattle_interpreter_new ();
 	program = cattle_interpreter_get_program (interpreter);
-	cattle_interpreter_set_configuration (interpreter, configuration);
 
 	/* Load program */
 	error = NULL;
@@ -134,6 +134,8 @@ main (gint    argc,
 	g_object_unref (program);
 	g_free (contents);
 
+	/* XXX Free options values */
+
 	if (!success) {
 
 		display_error (argv[1],
@@ -142,6 +144,41 @@ main (gint    argc,
 		g_object_unref (interpreter);
 
 		return 1;
+	}
+
+	output_stream = NULL;
+
+	/* Assign configuration created using commandline options to the
+	 * interpreter */
+	cattle_interpreter_set_configuration (interpreter,
+	                                      option_values->configuration);
+
+	/* If output to file was chosen, open the selected output file and
+	 * assign a suitable output handler to the interpreter */
+	if (option_values->output_filename != NULL) {
+
+		file = g_file_new_for_commandline_arg (option_values->output_filename);
+
+		error = NULL;
+		output_stream = g_file_replace (file,
+		                                NULL,  /* No etag */
+		                                FALSE, /* No backups */
+		                                G_FILE_CREATE_NONE,
+		                                NULL,
+		                                &error);
+
+		if (error != NULL) {
+
+			display_error (option_values->output_filename,
+			               error->message);
+
+			return 1;
+		}
+
+		/* Set output handler for the interpreter */
+		cattle_interpreter_set_output_handler (interpreter,
+		                                       output_handler,
+		                                       output_stream);
 	}
 
 	/* Run program */
@@ -157,6 +194,14 @@ main (gint    argc,
 		g_object_unref (interpreter);
 
 		return 1;
+	}
+
+	if (output_stream != NULL) {
+
+		error = NULL;
+		g_output_stream_close (G_OUTPUT_STREAM (output_stream),
+		                       NULL,
+		                       &error);
 	}
 
 	g_object_unref (interpreter);

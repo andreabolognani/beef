@@ -22,10 +22,19 @@
 #define __OPTIONS_H__
 
 #include <glib.h>
+#include <cattle/cattle.h>
 
 G_BEGIN_DECLS
 
-#define N_OPTIONS 2
+typedef struct _OptionValues OptionValues;
+
+struct _OptionValues
+{
+	CattleConfiguration *configuration;
+	gchar               *output_filename;
+};
+
+#define N_OPTIONS 3
 
 GOptionEntry entries[N_OPTIONS + 1];
 

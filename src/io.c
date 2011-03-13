@@ -92,3 +92,37 @@ load_file_contents (GFile   *file,
 
 	return contents;
 }
+
+/**
+ * output_handler:
+ *
+ * Dump interpreter's output to a GOutputStream.
+ */
+gboolean
+output_handler (CattleInterpreter  *interpreter,
+                gchar               output,
+                gpointer            data,
+                GError            **error)
+{
+	GOutputStream *stream;
+	GError *inner_error;
+
+	stream = G_OUTPUT_STREAM (data);
+
+	inner_error = NULL;
+	g_output_stream_write (stream,
+	                       &output,
+	                       1,
+	                       NULL,
+	                       &inner_error);
+
+	if (inner_error != NULL) {
+
+		g_propagate_error (error,
+		                   inner_error);
+
+		return FALSE;
+	}
+
+	return TRUE;
+}

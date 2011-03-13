@@ -23,6 +23,7 @@
 #include <cattle/cattle.h>
 #include <config.h>
 #include "io.h"
+#include "options.h"
 
 /**
  * display_error:
@@ -42,22 +43,59 @@ display_error (const gchar *program,
 	                            error);
 }
 
+/**
+ * main:
+ *
+ * Application entry point.
+ */
 gint
-main (gint argc, gchar **argv)
+main (gint    argc,
+      gchar **argv)
 {
 	CattleInterpreter *interpreter;
 	CattleProgram *program;
+	CattleConfiguration *configuration;
 	GFile *file;
+	GOptionContext *context;
+	GOptionGroup *group;
 	GError *error;
+	gchar *program_name;
 	gchar *contents;
 	gboolean success;
 
 	g_set_prgname ("beef");
 	g_type_init ();
 
-	if (argc < 2) {
+	program_name = argv[0];
 
-		g_printerr ("Usage: %s [FILE]\n", argv[0]);
+	/* Set up a configuration group for commanline options */
+	configuration = cattle_configuration_new ();
+	context = g_option_context_new ("FILE - Flexible Brainfuck interpreter");
+	group = g_option_group_new ("",
+	                            "",
+	                            "",
+	                            configuration,
+	                            NULL);
+	g_option_group_add_entries (group, entries);
+	g_option_context_set_main_group (context, group);
+
+	/* Parse commandline options */
+	error = NULL;
+	success = g_option_context_parse (context, &argc, &argv, &error);
+
+	if (!success) {
+
+		display_error (program_name,
+		               "",
+		               error->message);
+
+		return 1;
+	}
+
+	/* Make sure a file has been specified on the commandline */
+	if (argc != 2) {
+
+		g_printerr ("Usage:\n  %s [OPTION...] FILE\n", g_get_prgname ());
 
 		return 1;
 	}
@@ -72,7 +110,7 @@ main (gint argc, gchar **argv)
 
 	if (contents == NULL) {
 
-		display_error (argv[0],
+		display_error (program_name,
 		               argv[1],
 		               error->message);
 
@@ -81,6 +119,7 @@ main (gint argc, gchar **argv)
 
 	interpreter = cattle_interpreter_new ();
 	program = cattle_interpreter_get_program (interpreter);
+	cattle_interpreter_set_configuration (interpreter, configuration);
 
 	/* Load program */
 	error = NULL;
@@ -92,7 +131,7 @@ main (gint argc, gchar **argv)
 
 	if (!success) {
 
-		display_error (argv[0],
+		display_error (program_name,
 		               argv[1],
 		               error->message);
 
@@ -108,7 +147,7 @@ main (gint argc, gchar **argv)
 
 	if (!success) {
 
-		display_error (argv[0],
+		display_error (program_name,
 		               argv[1],
 		               error->message);
 

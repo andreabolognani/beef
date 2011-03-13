@@ -25,4 +25,6 @@ beef_SOURCES = \
 	io.h \
 	io.c \
 	main.c \
+	options.h \
+	options.c \
 	$(NULL)

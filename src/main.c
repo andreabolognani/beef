@@ -96,6 +96,11 @@ main (gint    argc,
 		display_error (NULL,
 		               error->message);
 
+		g_object_unref (option_values->configuration);
+		g_free (option_values->output_filename);
+		g_free (option_values->input_filename);
+		g_free (option_values);
+
 		return 1;
 	}
 
@@ -104,6 +109,11 @@ main (gint    argc,
 
 		display_error (NULL,
 		               "Wrong number of arguments");
+
+		g_object_unref (option_values->configuration);
+		g_free (option_values->output_filename);
+		g_free (option_values->input_filename);
+		g_free (option_values);
 
 		return 1;
 	}
@@ -121,6 +131,11 @@ main (gint    argc,
 		display_error (argv[1],
 		               error->message);
 
+		g_object_unref (option_values->configuration);
+		g_free (option_values->output_filename);
+		g_free (option_values->input_filename);
+		g_free (option_values);
+
 		return 1;
 	}
 
@@ -135,14 +150,16 @@ main (gint    argc,
 	g_object_unref (program);
 	g_free (contents);
 
-	/* XXX Free options values */
-
 	if (!success) {
 
 		display_error (argv[1],
 		               error->message);
 
 		g_object_unref (interpreter);
+		g_object_unref (option_values->configuration);
+		g_free (option_values->output_filename);
+		g_free (option_values->input_filename);
+		g_free (option_values);
 
 		return 1;
 	}
@@ -154,6 +171,7 @@ main (gint    argc,
 	 * interpreter */
 	cattle_interpreter_set_configuration (interpreter,
 	                                      option_values->configuration);
+	g_object_unref (option_values->configuration);
 
 	/* If output to file was chosen, open the selected output file and
 	 * assign a suitable output handler to the interpreter */
@@ -168,11 +186,17 @@ main (gint    argc,
 		                                G_FILE_CREATE_NONE,
 		                                NULL,
 		                                &error);
+		g_object_unref (file);
 
 		if (error != NULL) {
 
 			display_error (option_values->output_filename,
 			               error->message);
+
+			g_object_unref (interpreter);
+			g_free (option_values->output_filename);
+			g_free (option_values->input_filename);
+			g_free (option_values);
 
 			return 1;
 		}
@@ -193,11 +217,18 @@ main (gint    argc,
 		input_stream = g_file_read (file,
 		                            NULL,
 		                            &error);
+		g_object_unref (file);
 
 		if (error != NULL) {
 
 			display_error (option_values->input_filename,
 			               error->message);
+
+			g_object_unref (output_stream);
+			g_object_unref (interpreter);
+			g_free (option_values->output_filename);
+			g_free (option_values->input_filename);
+			g_free (option_values);
 
 			return 1;
 		}
@@ -218,28 +249,67 @@ main (gint    argc,
 		display_error (argv[1],
 		               error->message);
 
+		g_object_unref (input_stream);
+		g_object_unref (output_stream);
 		g_object_unref (interpreter);
+		g_free (option_values->output_filename);
+		g_free (option_values->input_filename);
+		g_free (option_values);
 
 		return 1;
 	}
 
 	if (output_stream != NULL) {
 
+		/* Close the output file */
 		error = NULL;
 		g_output_stream_close (G_OUTPUT_STREAM (output_stream),
 		                       NULL,
 		                       &error);
+		g_object_unref (output_stream);
+
+		if (error != NULL) {
+
+			display_error (option_values->output_filename,
+			               error->message);
+
+			g_object_unref (input_stream);
+			g_object_unref (interpreter);
+			g_free (option_values->output_filename);
+			g_free (option_values->input_filename);
+			g_free (option_values);
+
+			return 1;
+		}
 	}
 
 	if (input_stream != NULL) {
 
+		/* Close the input file */
 		error = NULL;
 		g_input_stream_close (G_INPUT_STREAM (input_stream),
 		                      NULL,
 		                      &error);
+		g_object_unref (input_stream);
+
+		if (error != NULL) {
+
+			display_error (option_values->input_filename,
+			               error->message);
+
+			g_object_unref (interpreter);
+			g_free (option_values->output_filename);
+			g_free (option_values->input_filename);
+			g_free (option_values);
+
+			return 1;
+		}
 	}
 
 	g_object_unref (interpreter);
+	g_free (option_values->output_filename);
+	g_free (option_values->input_filename);
+	g_free (option_values);
 
 	return 0;
 }

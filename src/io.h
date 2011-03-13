@@ -18,9 +18,18 @@
  * Homepage: http://kiyuko.org/software/beef
  */
 
+#ifndef __IO_H__
+#define __IO_H__
+
 #include <glib.h>
 #include <glib-object.h>
 #include <gio/gio.h>
 
+G_BEGIN_DECLS
+
 gchar* load_file_contents (GFile   *file,
                            GError **error);
+
+G_END_DECLS
+
+#endif /* __IO_H__ */

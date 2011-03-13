@@ -35,6 +35,9 @@ gboolean output_handler     (CattleInterpreter  *interpreter,
                              gchar               output,
                              gpointer            data,
                              GError            **error);
+gboolean input_handler      (CattleInterpreter  *interpreter,
+                             gpointer            data,
+                             GError            **error);
 
 G_END_DECLS
 

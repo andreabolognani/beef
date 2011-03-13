@@ -21,6 +21,13 @@
 #include "io.h"
 
 /**
+ * INPUT_BUFFER_SIZE:
+ *
+ * Requested size for each read operation.
+ */
+#define INPUT_BUFFER_SIZE 1024
+
+/**
  * load_file_contents:
  * @file: a #GFile
  * @error: (allow-none): return location for a #GError, or %NULL
@@ -122,6 +129,57 @@ output_handler (CattleInterpreter  *interpreter,
 		                   inner_error);
 
 		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/**
+ * input_handler:
+ *
+ * Read interpreter's input from a GInputStream.
+ */
+gboolean
+input_handler (CattleInterpreter  *interpreter,
+               gpointer            data,
+               GError            **error)
+{
+	GInputStream *stream;
+	GError *inner_error;
+	gchar buffer[INPUT_BUFFER_SIZE];
+	gssize count;
+
+	stream = G_INPUT_STREAM (data);
+
+	inner_error = NULL;
+	count = g_input_stream_read (stream,
+	                             buffer,
+	                             INPUT_BUFFER_SIZE - 1,
+	                             NULL,
+	                             &inner_error);
+
+	/* Make sure the buffer is null-terminated */
+	buffer[count] = '\0';
+
+	if (inner_error != NULL) {
+
+		g_propagate_error (error,
+		                   inner_error);
+
+		return FALSE;
+	}
+
+	/* Feed the interpreter with the new input, or notify it that the
+	 * end of input has been reached */
+	if (count == 0) {
+
+		cattle_interpreter_feed (interpreter,
+		                         NULL);
+	}
+	else {
+
+		cattle_interpreter_feed (interpreter,
+		                         buffer);
 	}
 
 	return TRUE;

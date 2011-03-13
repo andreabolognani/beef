@@ -147,6 +147,34 @@ parse_output_filename (const gchar  *option_name,
 }
 
 /**
+ * parse_input_filename:
+ *
+ * Parse the argument for the --input-file option.
+ */
+static gboolean
+parse_input_filename (const gchar  *option_name,
+                      const gchar  *value,
+                      gpointer      data,
+                      GError      **error)
+{
+	OptionValues *option_values;
+
+	option_values = (OptionValues*) data;
+
+	if (g_utf8_collate (value, "-") == 0) {
+
+		option_values->input_filename = NULL;
+	}
+	else {
+
+		option_values->input_filename = g_strdup (value);
+	}
+
+	return TRUE;
+}
+
+
+/**
  * entries:
  *
  * Commandline options definition.
@@ -159,7 +187,16 @@ GOptionEntry entries[N_OPTIONS + 1] =
 		G_OPTION_FLAG_FILENAME,
 		G_OPTION_ARG_CALLBACK,
 		parse_output_filename,
-		"Output filename",
+		"Send program's output to FILE",
+		"FILE"
+	},
+	{
+		"input-filename",
+		'i',
+		G_OPTION_FLAG_FILENAME,
+		G_OPTION_ARG_CALLBACK,
+		parse_input_filename,
+		"Read program's input from FILE",
 		"FILE"
 	},
 	{

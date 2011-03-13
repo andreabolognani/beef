@@ -64,6 +64,7 @@ main (gint    argc,
 	CattleProgram *program;
 	GFile *file;
 	GFileOutputStream *output_stream;
+	GFileInputStream *input_stream;
 	GOptionContext *context;
 	GOptionGroup *group;
 	GError *error;
@@ -147,6 +148,7 @@ main (gint    argc,
 	}
 
 	output_stream = NULL;
+	input_stream = NULL;
 
 	/* Assign configuration created using commandline options to the
 	 * interpreter */
@@ -181,6 +183,31 @@ main (gint    argc,
 		                                       output_stream);
 	}
 
+	/* If input from file was chosen, open the selected input file and
+	 * assign a suitable input handler to the interpreter */
+	if (option_values->input_filename != NULL) {
+
+		file = g_file_new_for_commandline_arg (option_values->input_filename);
+
+		error = NULL;
+		input_stream = g_file_read (file,
+		                            NULL,
+		                            &error);
+
+		if (error != NULL) {
+
+			display_error (option_values->input_filename,
+			               error->message);
+
+			return 1;
+		}
+
+		/* Set input handler for the interpreter */
+		cattle_interpreter_set_input_handler (interpreter,
+		                                      input_handler,
+		                                      input_stream);
+	}
+
 	/* Run program */
 	error = NULL;
 	success = cattle_interpreter_run (interpreter,
@@ -202,6 +229,14 @@ main (gint    argc,
 		g_output_stream_close (G_OUTPUT_STREAM (output_stream),
 		                       NULL,
 		                       &error);
+	}
+
+	if (input_stream != NULL) {
+
+		error = NULL;
+		g_input_stream_close (G_INPUT_STREAM (input_stream),
+		                      NULL,
+		                      &error);
 	}
 
 	g_object_unref (interpreter);

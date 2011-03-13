@@ -32,9 +32,10 @@ struct _OptionValues
 {
 	CattleConfiguration *configuration;
 	gchar               *output_filename;
+	gchar               *input_filename;
 };
 
-#define N_OPTIONS 3
+#define N_OPTIONS 4
 
 GOptionEntry entries[N_OPTIONS + 1];
 

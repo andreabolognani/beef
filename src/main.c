@@ -27,20 +27,26 @@
 
 /**
  * display_error:
- * @program: program path
- * @file: file path
- * @error: error message
+ * @context: (allow-none): file path
+ * @message: error message
  *
  * Display an error encountered by @program while processing @file.
  */
 void
-display_error (const gchar *program,
-               const gchar *file,
-               const gchar *error)
+display_error (const gchar *context,
+               const gchar *message)
 {
-	g_printerr ("%s: %s: %s\n", program,
-	                            file,
-	                            error);
+	if (context != NULL) {
+
+		g_printerr ("%s: %s: %s\n", g_get_prgname (),
+		                            context,
+		                            message);
+	}
+	else {
+
+		g_printerr ("%s: %s\n", g_get_prgname (),
+		                        message);
+	}
 }
 
 /**
@@ -85,8 +91,7 @@ main (gint    argc,
 
 	if (!success) {
 
-		display_error (program_name,
-		               "",
+		display_error (NULL,
 		               error->message);
 
 		return 1;
@@ -95,7 +100,8 @@ main (gint    argc,
 	/* Make sure a file has been specified on the commandline */
 	if (argc != 2) {
 
-		g_printerr ("Usage:\n  %s [OPTION...] FILE\n", g_get_prgname ());
+		display_error (NULL,
+		               "Wrong number of arguments");
 
 		return 1;
 	}
@@ -110,8 +116,7 @@ main (gint    argc,
 
 	if (contents == NULL) {
 
-		display_error (program_name,
-		               argv[1],
+		display_error (argv[1],
 		               error->message);
 
 		return 1;
@@ -131,8 +136,7 @@ main (gint    argc,
 
 	if (!success) {
 
-		display_error (program_name,
-		               argv[1],
+		display_error (argv[1],
 		               error->message);
 
 		g_object_unref (interpreter);
@@ -147,8 +151,7 @@ main (gint    argc,
 
 	if (!success) {
 
-		display_error (program_name,
-		               argv[1],
+		display_error (argv[1],
 		               error->message);
 
 		g_object_unref (interpreter);

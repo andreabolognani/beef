@@ -22,6 +22,7 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 #include <cattle/cattle.h>
+#include <readline/readline.h>
 #include <config.h>
 #include "io.h"
 #include "options.h"
@@ -239,6 +240,9 @@ main (gint    argc,
 		                                      input_stream);
 	}
 	else {
+
+		/* Disable filename completion on TAB */
+		rl_bind_key ('\t', rl_insert);
 
 		/* Use a readline-based interactive input handler */
 		cattle_interpreter_set_input_handler (interpreter,

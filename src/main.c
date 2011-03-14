@@ -201,12 +201,12 @@ main (gint    argc,
 
 			return 1;
 		}
-
-		/* Set output handler for the interpreter */
-		cattle_interpreter_set_output_handler (interpreter,
-		                                       output_handler,
-		                                       output_stream);
 	}
+
+	/* Set output handler for the interpreter */
+	cattle_interpreter_set_output_handler (interpreter,
+	                                       output_handler,
+	                                       output_stream);
 
 	/* If input from file was chosen, open the selected input file and
 	 * assign a suitable input handler to the interpreter */
@@ -240,6 +240,9 @@ main (gint    argc,
 		                                      input_stream);
 	}
 	else {
+
+		/* Initialize readline */
+		rl_initialize ();
 
 		/* Disable filename completion on TAB */
 		rl_bind_key ('\t', rl_insert);

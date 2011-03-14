@@ -30,6 +30,14 @@
 #define INPUT_BUFFER_SIZE 1024
 
 /**
+ * prompt:
+ *
+ * The last line of output. Must be passed to readline() for line
+ * editing to work as expected.
+ */
+static gchar *prompt = NULL;
+
+/**
  * load_file_contents:
  * @file: a #GFile
  * @error: (allow-none): return location for a #GError, or %NULL
@@ -115,22 +123,54 @@ output_handler (CattleInterpreter  *interpreter,
 {
 	GOutputStream *stream;
 	GError *inner_error;
+	gchar *temp;
 
-	stream = G_OUTPUT_STREAM (data);
+	if (G_IS_OUTPUT_STREAM (data)) {
 
-	inner_error = NULL;
-	g_output_stream_write (stream,
-	                       &output,
-	                       1,
-	                       NULL,
-	                       &inner_error);
+		/* Writing to a file: get the stream */
+		stream = G_OUTPUT_STREAM (data);
 
-	if (inner_error != NULL) {
+		inner_error = NULL;
+		g_output_stream_write (stream,
+		                       &output,
+		                       1,
+		                       NULL,
+		                       &inner_error);
 
-		g_propagate_error (error,
-		                   inner_error);
+		if (inner_error != NULL) {
 
-		return FALSE;
+			g_propagate_error (error,
+			                   inner_error);
+
+			return FALSE;
+		}
+	}
+	else {
+
+		/* Write to standard output */
+		g_print ("%c", output);
+	}
+
+	/* Create an empty string for prompt */
+	if (prompt == NULL) {
+
+		prompt = g_strdup ("");
+	}
+
+	/* Not the end of the current line */
+	if (output != '\n') {
+
+		/* Append the output character to the prompt string */
+		temp = g_strdup_printf ("%s%c", prompt,
+		                                output);
+		g_free (prompt);
+		prompt = temp;
+	}
+	else {
+
+		/* End of current line: reset the prompt */
+		g_free (prompt);
+		prompt = NULL;
 	}
 
 	return TRUE;
@@ -200,8 +240,11 @@ input_handler_interactive (CattleInterpreter  *interpreter,
 	char *buffer;
 	gchar *temp;
 
-	/* Use readline to fetch user input (no prompt) */
-	buffer = readline ("");
+	/* Use readline to fetch user input. readline is notified of
+	 * the fact that it should not handle the prompt itself, as there
+	 * is actually no prompt, but there could be some program output */
+	rl_already_prompted = 1;
+	buffer = readline (prompt);
 
 	if (buffer == NULL) {
 
@@ -210,6 +253,9 @@ input_handler_interactive (CattleInterpreter  *interpreter,
 	}
 	else {
 
+		/* The input fed to the interpreter must retain the newline
+		 * character, but readline strips it, so it has to be
+		 * manually added back */
 		temp = g_strdup_printf ("%s\n", buffer);
 		free (buffer);
 

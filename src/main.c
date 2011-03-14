@@ -238,6 +238,13 @@ main (gint    argc,
 		                                      input_handler,
 		                                      input_stream);
 	}
+	else {
+
+		/* Use a readline-based interactive input handler */
+		cattle_interpreter_set_input_handler (interpreter,
+		                                      input_handler_interactive,
+		                                      NULL);
+	}
 
 	/* Run program */
 	error = NULL;

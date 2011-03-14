@@ -18,6 +18,8 @@
  * Homepage: http://kiyuko.org/software/beef
  */
 
+#include <readline/readline.h>
+#include <stdlib.h>
 #include "io.h"
 
 /**
@@ -180,6 +182,40 @@ input_handler (CattleInterpreter  *interpreter,
 
 		cattle_interpreter_feed (interpreter,
 		                         buffer);
+	}
+
+	return TRUE;
+}
+
+/**
+ * input_handler_interactive:
+ *
+ * Retrieve input from the user in an interactive way.
+ */
+gboolean
+input_handler_interactive (CattleInterpreter  *interpreter,
+                           gpointer            data,
+                           GError            **error)
+{
+	char *buffer;
+	gchar *temp;
+
+	/* Use readline to fetch user input (no prompt) */
+	buffer = readline ("");
+
+	if (buffer == NULL) {
+
+		cattle_interpreter_feed (interpreter,
+		                         NULL);
+	}
+	else {
+
+		temp = g_strdup_printf ("%s\n", buffer);
+		free (buffer);
+
+		cattle_interpreter_feed (interpreter,
+		                         temp);
+		g_free (temp);
 	}
 
 	return TRUE;

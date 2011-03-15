@@ -191,7 +191,7 @@ GOptionEntry entries[N_OPTIONS + 1] =
 		"FILE"
 	},
 	{
-		"input-filename",
+		"input-file",
 		'i',
 		G_OPTION_FLAG_FILENAME,
 		G_OPTION_ARG_CALLBACK,

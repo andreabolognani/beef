@@ -246,6 +246,11 @@ input_handler_interactive (CattleInterpreter  *interpreter,
 	rl_already_prompted = 1;
 	buffer = readline (prompt);
 
+	/* Reset prompt after input, because the cursor is certainly at
+	 * the beginning of a new line */
+	g_free (prompt);
+	prompt = NULL;
+
 	if (buffer == NULL) {
 
 		cattle_interpreter_feed (interpreter,

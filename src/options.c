@@ -156,22 +156,13 @@ parse_input_filename (const gchar  *option_name,
 GOptionEntry entries[N_OPTIONS + 1] =
 {
 	{
-		"output-file",
-		'o',
-		G_OPTION_FLAG_FILENAME,
+		"store",
+		's',
+		0,
 		G_OPTION_ARG_CALLBACK,
-		parse_output_filename,
-		"Send program's output to FILE",
-		"FILE"
-	},
-	{
-		"input-file",
-		'i',
-		G_OPTION_FLAG_FILENAME,
-		G_OPTION_ARG_CALLBACK,
-		parse_input_filename,
-		"Read program's input from FILE",
-		"FILE"
+		parse_store,
+		"Choose what to store when the end of input is reached",
+		"zero|eof|same"
 	},
 	{
 		"enable-debugging",
@@ -183,13 +174,22 @@ GOptionEntry entries[N_OPTIONS + 1] =
 		NULL
 	},
 	{
-		"store",
-		's',
-		0,
+		"output-file",
+		'o',
+		G_OPTION_FLAG_FILENAME,
 		G_OPTION_ARG_CALLBACK,
-		parse_store,
-		"What to store when an EOF is read from the input",
-		"zero|eof|same"
+		parse_output_filename,
+		"Write program's output to FILE",
+		"FILE"
+	},
+	{
+		"input-file",
+		'i',
+		G_OPTION_FLAG_FILENAME,
+		G_OPTION_ARG_CALLBACK,
+		parse_input_filename,
+		"Read program's input from FILE",
+		"FILE"
 	},
 	{NULL}
 };

@@ -12,6 +12,8 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
+AC_CHECK_PROG([PANDOC], [pandoc], [pandoc], [])
+
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED
                         gobject-2.0 >= $GLIB_REQUIRED
                         gio-2.0 >= $GLIB_REQUIRED)
@@ -32,6 +34,7 @@ AC_SUBST(CATTLE_LIBS)
 
 AC_CONFIG_FILES([
 	Makefile
+	doc/Makefile
 	src/Makefile])
 
 AC_OUTPUT

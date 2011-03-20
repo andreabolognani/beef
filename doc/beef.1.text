@@ -1,0 +1,38 @@
+% BEEF(1) Beef 1.0.0
+% Andrea Bolognani <eof@kiyuko.org>
+% March 2011
+
+# NAME
+
+Beef -- Flexible Brainfuck interpreter
+
+# SYNOPSIS
+
+beef [_OPTION_]... _FILE_
+
+# DESCRIPTION
+
+`Beef` is a flexible interpreter for the Brainfuck programming language.
+
+It can be configured using the options described below, making it possible
+to run Brainfuck programs that make assumptions on the behavior of the
+interpreter.
+
+`Beef` sets no arbitrary limit to the size of the memory tape used by
+the program, and allocates cells as they are needed.
+
+# OPTIONS
+
+`-s`, `--store`=_WHAT_
+:	Choose the value to store in the tape when the end of input is reached. WHAT defaults to \`zero\' (store a zero); other possible values are \`eof\' (store the value corresponding to EOF) or \`same\' (leave the value untouched)
+
+`-d`, `--enable-debugging`
+:	Enable debugging support. By default, debugging instructions (#) are not executed
+
+`-o`, `--output-file`=_FILE_
+:	Write program's output to FILE
+
+`-i`, `--input-file`=_FILE_
+:	Read program's input from FILE
+
+FILEs can be local, or URIs supported by GIO.

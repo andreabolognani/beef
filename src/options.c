@@ -87,34 +87,8 @@ parse_debugging (const gchar *option_name,
 	option_values = (OptionValues*) data;
 	configuration = option_values->configuration;
 
-	if (value == NULL) {
-
-		cattle_configuration_set_debug_is_enabled (configuration,
-		                                           TRUE);
-	}
-	else if (g_utf8_collate (value, "yes") == 0 ||
-	         g_utf8_collate (value, "true") == 0) {
-
-		cattle_configuration_set_debug_is_enabled (configuration,
-		                                           TRUE);
-	}
-	else if (g_utf8_collate (value, "no") == 0 ||
-	         g_utf8_collate (value, "false") == 0) {
-
-		cattle_configuration_set_debug_is_enabled (configuration,
-		                                           FALSE);
-	}
-	else {
-
-		g_set_error (error,
-		             G_OPTION_ERROR,
-		             G_OPTION_ERROR_FAILED,
-		             "Invalid argument %s for %s",
-		             value,
-		             option_name);
-
-		return FALSE;
-	}
+	cattle_configuration_set_debug_is_enabled (configuration,
+	                                           TRUE);
 
 	return TRUE;
 }
@@ -202,7 +176,7 @@ GOptionEntry entries[N_OPTIONS + 1] =
 	{
 		"enable-debugging",
 		'd',
-		G_OPTION_FLAG_OPTIONAL_ARG,
+		G_OPTION_FLAG_NO_ARG,
 		G_OPTION_ARG_CALLBACK,
 		parse_debugging,
 		"Enable debugging support",

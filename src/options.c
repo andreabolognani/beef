@@ -147,13 +147,12 @@ parse_input_filename (const gchar  *option_name,
 	return TRUE;
 }
 
-
 /**
- * entries:
+ * option_entries:
  *
  * Commandline options definition.
  */
-GOptionEntry entries[N_OPTIONS + 1] =
+static GOptionEntry option_entries[] =
 {
 	{
 		"store",
@@ -193,3 +192,14 @@ GOptionEntry entries[N_OPTIONS + 1] =
 	},
 	{NULL}
 };
+
+/**
+ * get_option_entries:
+ *
+ * Obtain a pointer to the option entries.
+ */
+GOptionEntry*
+get_option_entries (void)
+{
+	return option_entries;
+}

@@ -35,9 +35,7 @@ struct _OptionValues
 	gchar               *input_filename;
 };
 
-#define N_OPTIONS 4
-
-GOptionEntry entries[N_OPTIONS + 1];
+GOptionEntry* get_option_entries (void);
 
 G_END_DECLS
 

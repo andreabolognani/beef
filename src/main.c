@@ -85,7 +85,8 @@ main (gint    argc,
 	                            "",
 	                            option_values,
 	                            NULL);
-	g_option_group_add_entries (group, entries);
+	g_option_group_add_entries (group,
+	                            get_option_entries ());
 	g_option_context_set_main_group (context, group);
 
 	/* Parse commandline options */

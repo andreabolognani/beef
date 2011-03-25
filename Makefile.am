@@ -9,6 +9,8 @@ doc_DATA = \
 	AUTHORS \
 	ChangeLog \
 	COPYING \
+	HACKING \
+	INSTALL \
 	NEWS \
 	README \
 	$(NULL)

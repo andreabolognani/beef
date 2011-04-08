@@ -12,10 +12,9 @@ beef.1: beef.1.text
 	echo "         Pandoc missing, man page might be outdated" >&2)
 
 DISTCLEANFILES = \
-	beef.1 \
+	$(man_MANS) \
 	$(NULL)
 
 EXTRA_DIST = \
-	beef.1 \
-	beef.1.text \
+	$(man_MANS) \
 	$(NULL)

@@ -35,6 +35,7 @@ AC_SUBST(CATTLE_LIBS)
 AC_CONFIG_FILES([
 	Makefile
 	doc/Makefile
+	doc/beef.1.text
 	src/Makefile])
 
 AC_OUTPUT

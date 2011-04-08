@@ -27,7 +27,7 @@ the program, and allocates cells as they are needed.
 :	Choose the value to store in the tape when the end of input is reached. WHAT defaults to \`zero\' (store a zero); other possible values are \`eof\' (store the value corresponding to EOF) or \`same\' (leave the value untouched)
 
 `-d`, `--enable-debugging`
-:	Enable debugging support. By default, debugging instructions (#) are not executed
+:	Enable debugging support. By default, debugging instructions are not executed
 
 `-o`, `--output-file`=_FILE_
 :	Write program's output to FILE
@@ -36,3 +36,67 @@ the program, and allocates cells as they are needed.
 :	Read program's input from FILE
 
 FILEs can be local, or URIs supported by GIO.
+
+# BRAINFUCK LANGUAGE
+
+Brainfuck programs work on a memory tape which contains a virtually unlimited
+number of cells; each cell can store a value, which can be seen either as
+a character or as an integer number (its ASCII encoding) depending on the
+context. There is a cursor pointing to one of the cells, which is considered
+to be the current one; the cursor can be moved around at will.
+
+A Brainfuck source file is made of a number of Brainfuck instructions; any
+symbol which is not an instruction is considered a comment and is ignored.
+There are exceptions to this rule, see below.
+
+The Brainfuck instructions are:
+
+`+`
+:	Increase the value in the current cell by one
+
+`-`
+:	Decrease the value in the current cell by one
+
+`>`
+:	Move the cursor one cell to the right
+
+`<`
+:	Move the cursor one cell to the left
+
+`[`
+:	Start a loop. The instructions contained in the loop are executed as long as the value of the current cell is not zero
+
+`]`
+:	End a loop started by a `[` instruction
+
+`,`
+:	Read a character from the input and store it in che current cell
+
+`.`
+:	Write the value of the current cell to the output
+
+`#`
+:	Dump the content of the memory tape for debugging purposes. This instruction is ignored unless the `--enable-debugging` option is present
+
+If the first line of the source file starts with the magic sequence `#!` it
+is ignored. This allows you to execute a Brainfuck program without calling
+`Beef` explicitly, like you would do for eg. a Python program.
+
+The symbol `!` has a special meaning to `Beef`: it marks the end of a
+program's code and the beginning of its input. If this symbol is present
+in the source file, runtime input will be ignored.
+
+# EXAMPLES
+
+The classic Hello World program could be written in Brainfuck as
+
+		++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.++++++
+		+..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
+
+The following Brainfuck program can be used to replace the _cat_(1) utility:
+
+		#!/usr/bin/beef
+		,[.,]
+
+(assuming you don't need any of _cat_(1)'s fancy commandline options, you
+have a shell with working I/O redirection and a sense of humor).

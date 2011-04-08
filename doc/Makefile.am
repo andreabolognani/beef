@@ -6,13 +6,10 @@ man_MANS = \
 
 beef.1: beef.1.text
 	$(AM_V_GEN) \
-	(if test "x$(PANDOC)" != "x"; then \
-		$(PANDOC) -s -w man -o $@ \
-		$(srcdir)/beef.1.text; \
-	else \
-		echo "  ***    pandoc required to build man page"; \
-		exit 1; \
-	fi)
+	($(top_srcdir)/missing --run $(PANDOC) -s -w man -o $@.tmp $<) >/dev/null 2>&1 \
+	&& mv -f $@.tmp $@ \
+	|| ($(RM) $@.tmp; \
+	echo "         Pandoc missing, man page might be outdated" >&2)
 
 DISTCLEANFILES = \
 	beef.1 \
@@ -22,3 +19,5 @@ EXTRA_DIST = \
 	beef.1 \
 	beef.1.text \
 	$(NULL)
+
+.PHONY: beef.1

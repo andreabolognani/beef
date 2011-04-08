@@ -1,39 +1,29 @@
-# beef README
+Beef -- Flexible Brainfuck interpreter
+======================================
 
-################
-# Installation #
-################
+Beef is a flexible interpreter for the Brainfuck programming language.
+Its main goals are to be confortable for the user and to run most Brainfuck
+programs unchanged; speed is generally quite good.
 
-To compile beef, type `make'. If everything goes well, you'll have a file
-called `beef' in the current directory -- that is beef's binary.
 
-To install it in the system-wide bin directory, make sure you are root, then
-type `make install': this will install the man page and the documentation as
-well.
+Features
+========
 
-The default prefix is /usr, so beef will be placed in /usr/bin: if you want
-beef to be installed in another directory, use
-`make install PREFIX=/path/to/dir' -- the man page will be placed in
-/usr/share/man/man1 no matter what is the value of PREFIX. The available
-documentation will be installed into /usr/share/doc/beef.
+Beef can run virtually any Brainfuck program, even ones that make
+assumptions about the behavior of the interpreter, thanks to its
+configurability.
 
-If you don't like this setting, then you probably don't like the HFS too, but
-you can change them anyway editing the first few lines of the Makefile.
+Good error checking is performed, so incorrect programs will simply not
+be allowed to run, instead of manifesting undefined behavior.
 
-If you are using Debian (or a Debian-based distro such as Ubuntu), you can get
-beef from the main archive. Please note the packaged version is probably older
-than the current one.
+Beef is capable of loading programs straight off the Web or other kinds
+of non-local storage, as long as a suitable GVFS implementation is
+available on the system; the same applies to output, where it makes sense.
+GNU Readline is used for interactive user input.
 
-#########
-# Usage #
-#########
 
-See `man beef' or `beef --help' for more informations on beef's usage. It's
-really simple, anyway.
+Contact information
+===================
 
-##########
-# Author #
-##########
-
-beef is Copyright (C) 2005-2007 KiyuKo <eof AT kiyuko.org>
-Homepage: http://www.kiyuko.org/beef
+You can contact me anytime at the mail address <eof@kiyuko.org> if you
+need any information about Beef. Suggestion are greatly appreciated.

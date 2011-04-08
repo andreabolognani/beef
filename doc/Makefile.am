@@ -19,5 +19,3 @@ EXTRA_DIST = \
 	beef.1 \
 	beef.1.text \
 	$(NULL)
-
-.PHONY: beef.1

@@ -109,8 +109,7 @@ main (gint    argc,
 	/* Make sure a file has been specified on the commandline */
 	if (argc != 2) {
 
-		display_error (NULL,
-		               "Wrong number of arguments");
+		g_printerr ("Usage: %s [OPTION...] FILE\n", g_get_prgname ());
 
 		g_object_unref (option_values->configuration);
 		g_free (option_values->output_filename);

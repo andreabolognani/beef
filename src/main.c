@@ -24,6 +24,7 @@
 #include <cattle/cattle.h>
 #include <readline/readline.h>
 #include <config.h>
+#include <unistd.h>
 #include "io.h"
 #include "options.h"
 
@@ -241,16 +242,22 @@ main (gint    argc,
 	}
 	else {
 
-		/* Initialize readline */
-		rl_initialize ();
+		/* Use readline only if standard input is connected to a
+		 * terminal; otherwise, eg. when using shell input redirection,
+		 * the input is displayed along with the output, which is not nice */
+		if (isatty (0)) {
 
-		/* Disable filename completion on TAB */
-		rl_bind_key ('\t', rl_insert);
+			/* Initialize readline */
+			rl_initialize ();
 
-		/* Use a readline-based interactive input handler */
-		cattle_interpreter_set_input_handler (interpreter,
-		                                      input_handler_interactive,
-		                                      NULL);
+			/* Disable filename completion on TAB */
+			rl_bind_key ('\t', rl_insert);
+
+			/* Use a readline-based interactive input handler */
+			cattle_interpreter_set_input_handler (interpreter,
+			                                      input_handler_interactive,
+			                                      NULL);
+		}
 	}
 
 	/* Run program */

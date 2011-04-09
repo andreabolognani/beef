@@ -9,14 +9,14 @@ doc_DATA = \
 	AUTHORS \
 	ChangeLog \
 	COPYING \
-	HACKING \
-	INSTALL \
 	NEWS \
 	README \
 	$(NULL)
 
 EXTRA_DIST = \
 	$(doc_DATA) \
+	HACKING \
+	INSTALL \
 	$(NULL)
 
 DISTCLEANFILES = \

@@ -30,12 +30,71 @@
 #define INPUT_BUFFER_SIZE 1024
 
 /**
+ * PROMPT_BUFFER_SIZE:
+ *
+ * Size of the buffer used to store the prompt.
+ */
+#define PROMPT_BUFFER_SIZE 256
+
+/**
  * prompt:
  *
  * The last line of output. Must be passed to readline() for line
  * editing to work as expected.
  */
-static gchar *prompt = NULL;
+static gchar  *prompt = NULL;
+static gulong  prompt_cursor = 0;
+static gulong  prompt_length = 0;
+
+static void
+prompt_append (gint8 c)
+{
+	gchar  *temp;
+	gulong  i;
+
+	if (prompt == NULL)
+	{
+		/* First use.
+		 * Allocate a small buffer */
+		prompt = (gchar *) g_slice_alloc (PROMPT_BUFFER_SIZE);
+		prompt_length = PROMPT_BUFFER_SIZE;
+	}
+
+	if (prompt_cursor > prompt_length - 2)
+	{
+		/* The buffer needs to be extended */
+		temp = (gchar *) g_slice_alloc (prompt_length + PROMPT_BUFFER_SIZE);
+
+		for (i = 0; i < prompt_length; i++)
+		{
+			temp[i] = prompt[i];
+		}
+
+		if (prompt != NULL)
+		{
+			g_slice_free1 (prompt_length, prompt);
+		}
+
+		prompt = temp;
+		prompt_length += PROMPT_BUFFER_SIZE;
+	}
+
+	prompt[prompt_cursor] = c;
+	prompt[prompt_cursor + 1] = '\0';
+
+	prompt_cursor++;
+}
+
+static void
+prompt_reset (void)
+{
+	if (prompt != NULL)
+	{
+		prompt[0] = '\0';
+	}
+
+	prompt_cursor = 0;
+}
 
 /**
  * load_file_contents:
@@ -122,8 +181,8 @@ output_handler (CattleInterpreter  *interpreter,
 	GError        *inner_error;
 	gchar         *temp;
 
-	if (G_IS_OUTPUT_STREAM (data)) {
-
+	if (G_IS_OUTPUT_STREAM (data))
+	{
 		/* Writing to a file: get the stream */
 		stream = G_OUTPUT_STREAM (data);
 
@@ -142,32 +201,21 @@ output_handler (CattleInterpreter  *interpreter,
 			return FALSE;
 		}
 	}
-	else {
-
+	else
+	{
 		/* Write to standard output */
 		g_print ("%c", output);
 	}
 
-	/* Create an empty string for prompt */
-	if (prompt == NULL) {
+	/* Update the prompt */
 
-		prompt = g_strdup ("");
+	if (output != '\n')
+	{
+		prompt_append (output);
 	}
-
-	/* Not the end of the current line */
-	if (output != '\n') {
-
-		/* Append the output character to the prompt string */
-		temp = g_strdup_printf ("%s%c", prompt,
-		                                output);
-		g_free (prompt);
-		prompt = temp;
-	}
-	else {
-
-		/* End of current line: reset the prompt */
-		g_free (prompt);
-		prompt = NULL;
+	else
+	{
+		prompt_reset ();
 	}
 
 	return TRUE;
@@ -240,8 +288,7 @@ input_handler_interactive (CattleInterpreter  *interpreter,
 
 	/* Reset prompt after input, because the cursor is certainly at
 	 * the beginning of a new line */
-	g_free (prompt);
-	prompt = NULL;
+	prompt_reset ();
 
 	if (buffer == NULL)
 	{

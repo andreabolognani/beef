@@ -1,4 +1,4 @@
-/* Beef -- Flexible Brainfuck interpreter
+/* Beef - Flexible Brainfuck interpreter
  * Copyright (C) 2005-2014  Andrea Bolognani <eof@kiyuko.org>
  *
  * This program is free software; you can redistribute it and/or modify

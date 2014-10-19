@@ -35,28 +35,28 @@ parse_store (const gchar  *option_name,
              GError      **error)
 {
 	CattleConfiguration *configuration;
-	OptionValues *option_values;
+	OptionValues        *option_values;
 
 	option_values = (OptionValues*) data;
 	configuration = option_values->configuration;
 
-	if (g_utf8_collate (value, "zero") == 0) {
-
+	if (g_utf8_collate (value, "zero") == 0)
+	{
 		cattle_configuration_set_on_eof_action (configuration,
 		                                        CATTLE_ON_EOF_STORE_ZERO);
 	}
-	else if (g_utf8_collate (value, "eof") == 0) {
-
+	else if (g_utf8_collate (value, "eof") == 0)
+	{
 		cattle_configuration_set_on_eof_action (configuration,
 		                                        CATTLE_ON_EOF_STORE_EOF);
 	}
-	else if (g_utf8_collate (value, "same") == 0) {
-
+	else if (g_utf8_collate (value, "same") == 0)
+	{
 		cattle_configuration_set_on_eof_action (configuration,
 		                                        CATTLE_ON_EOF_DO_NOTHING);
 	}
-	else {
-
+	else
+	{
 		g_set_error (error,
 		             G_OPTION_ERROR,
 		             G_OPTION_ERROR_FAILED,
@@ -82,7 +82,7 @@ parse_debugging (const gchar *option_name,
                  GError      **error)
 {
 	CattleConfiguration *configuration;
-	OptionValues *option_values;
+	OptionValues        *option_values;
 
 	option_values = (OptionValues*) data;
 	configuration = option_values->configuration;
@@ -108,12 +108,12 @@ parse_output_filename (const gchar  *option_name,
 
 	option_values = (OptionValues*) data;
 
-	if (g_utf8_collate (value, "-") == 0) {
-
+	if (g_utf8_collate (value, "-") == 0)
+	{
 		option_values->output_filename = NULL;
 	}
-	else {
-
+	else
+	{
 		option_values->output_filename = g_strdup (value);
 	}
 
@@ -135,12 +135,12 @@ parse_input_filename (const gchar  *option_name,
 
 	option_values = (OptionValues*) data;
 
-	if (g_utf8_collate (value, "-") == 0) {
-
+	if (g_utf8_collate (value, "-") == 0)
+	{
 		option_values->input_filename = NULL;
 	}
-	else {
-
+	else
+	{
 		option_values->input_filename = g_strdup (value);
 	}
 

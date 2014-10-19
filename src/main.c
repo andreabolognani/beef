@@ -63,16 +63,16 @@ main (gint    argc,
       gchar **argv)
 {
 	CattleInterpreter *interpreter;
-	CattleProgram *program;
-	GFile *file;
+	CattleProgram     *program;
+	CattleBuffer      *buffer;
+	GFile             *file;
 	GFileOutputStream *output_stream;
-	GFileInputStream *input_stream;
-	GOptionContext *context;
-	GOptionGroup *group;
-	GError *error;
-	OptionValues *option_values;
-	gchar *contents;
-	gboolean success;
+	GFileInputStream  *input_stream;
+	GOptionContext    *context;
+	GOptionGroup      *group;
+	GError            *error;
+	OptionValues      *option_values;
+	gboolean           success;
 
 	g_set_prgname ("beef");
 	g_type_init ();
@@ -124,11 +124,11 @@ main (gint    argc,
 	file = g_file_new_for_commandline_arg (argv[1]);
 
 	error = NULL;
-	contents = load_file_contents (file,
-								   &error);
+	buffer = load_file_contents (file,
+	                             &error);
 	g_object_unref (file);
 
-	if (contents == NULL) {
+	if (buffer == NULL) {
 
 		display_error (argv[1],
 		               error->message);
@@ -147,10 +147,10 @@ main (gint    argc,
 	/* Load program */
 	error = NULL;
 	success = cattle_program_load (program,
-	                               contents,
+	                               buffer,
 	                               &error);
 	g_object_unref (program);
-	g_free (contents);
+	g_object_unref (buffer);
 
 	if (!success) {
 

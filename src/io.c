@@ -45,17 +45,18 @@ static gchar *prompt = NULL;
  * Load the contents of @file, with good error checking and proper
  * handling of magic bytes.
  *
- * Returns: the contents of @file, or %NULL
+ * Returns: (transfer full): the contents of @file, or %NULL
  */
-gchar*
+CattleBuffer*
 load_file_contents (GFile   *file,
                     GError **error)
 {
-	GError *inner_error;
-	gchar *contents;
-	gchar *temp;
-	gboolean success;
-	gsize len;
+	CattleBuffer *buffer;
+	GError       *inner_error;
+	gchar        *contents;
+	gchar        *temp;
+	gboolean      success;
+	gsize         len;
 
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
 	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -77,6 +78,7 @@ load_file_contents (GFile   *file,
 		return NULL;
 	}
 
+#if 0
 	/* Validate the contents as UTF-8 */
 	success = g_utf8_validate (contents,
 	                           len,
@@ -91,6 +93,7 @@ load_file_contents (GFile   *file,
 
 		return NULL;
 	}
+#endif
 
 	/* Detect and handle magic bytes */
 	if (g_str_has_prefix (contents, "#!")) {
@@ -105,9 +108,17 @@ load_file_contents (GFile   *file,
 		temp = g_strdup_printf ("%s", temp);
 		g_free (contents);
 		contents = temp;
+
+		/* */
+		len = strlen (contents);
 	}
 
-	return contents;
+	buffer = cattle_buffer_new (len);
+	cattle_buffer_set_contents (buffer, contents);
+
+	g_free (contents);
+
+	return buffer;
 }
 
 /**
@@ -117,13 +128,13 @@ load_file_contents (GFile   *file,
  */
 gboolean
 output_handler (CattleInterpreter  *interpreter,
-                gchar               output,
+                gint8               output,
                 gpointer            data,
                 GError            **error)
 {
 	GOutputStream *stream;
-	GError *inner_error;
-	gchar *temp;
+	GError        *inner_error;
+	gchar         *temp;
 
 	if (G_IS_OUTPUT_STREAM (data)) {
 

@@ -114,7 +114,7 @@ load_file_contents (GFile   *file,
 	GError       *inner_error;
 	gchar        *buffer;
 	gchar        *start;
-	gulong        size;
+	gsize         size;
 	gboolean      success;
 
 	g_return_val_if_fail (G_IS_FILE (file), NULL);

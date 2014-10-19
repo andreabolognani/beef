@@ -18,24 +18,23 @@ PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED
                         gobject-2.0 >= $GLIB_REQUIRED
                         gio-2.0 >= $GLIB_REQUIRED)
 PKG_CHECK_MODULES(CATTLE, cattle-1.0 >= $CATTLE_REQUIRED)
-AC_CHECK_LIB(
-	[readline],
-	[readline],
-	,
-	[AC_MSG_ERROR([readline library not found])])
-AC_CHECK_HEADER(
-	[readline/readline.h],
-	,
-	[AC_MSG_ERROR([readline headers not found])])
+
+AC_CHECK_LIB([readline],
+             [readline],
+             ,
+             [AC_MSG_ERROR([readline library not found])])
+AC_CHECK_HEADER([readline/readline.h],
+                ,
+                [AC_MSG_ERROR([readline headers not found])])
+
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 AC_SUBST(CATTLE_CFLAGS)
 AC_SUBST(CATTLE_LIBS)
 
-AC_CONFIG_FILES([
-	Makefile
-	doc/Makefile
-	doc/beef.1.text
-	src/Makefile])
+AC_CONFIG_FILES([Makefile
+                 doc/Makefile
+                 doc/beef.1.text
+                 src/Makefile])
 
 AC_OUTPUT

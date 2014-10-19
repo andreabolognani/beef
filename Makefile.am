@@ -6,17 +6,17 @@ SUBDIRS = \
 	$(NULL)
 
 doc_DATA = \
-	AUTHORS \
+	AUTHORS.md \
 	ChangeLog \
 	COPYING \
-	NEWS \
-	README \
+	NEWS.md \
+	README.md \
 	$(NULL)
 
 EXTRA_DIST = \
 	$(doc_DATA) \
-	HACKING \
-	INSTALL \
+	HACKING.md \
+	INSTALL.md \
 	$(NULL)
 
 DISTCLEANFILES = \

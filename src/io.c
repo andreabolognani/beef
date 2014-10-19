@@ -51,12 +51,12 @@ CattleBuffer*
 load_file_contents (GFile   *file,
                     GError **error)
 {
-	CattleBuffer *buffer;
+	CattleBuffer *contents;
 	GError       *inner_error;
-	gchar        *contents;
-	gchar        *temp;
+	gchar        *buffer;
+	gchar        *start;
+	gulong        size;
 	gboolean      success;
-	gsize         len;
 
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
 	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -65,60 +65,46 @@ load_file_contents (GFile   *file,
 	inner_error = NULL;
 	success = g_file_load_contents (file,
 	                                NULL,
-	                                &contents,
-	                                &len,
+	                                &buffer,
+	                                &size,
 	                                NULL, /* No etag */
 	                                &inner_error);
 
-	if (!success) {
-
+	if (!success)
+	{
 		g_propagate_error (error,
 		                   inner_error);
 
 		return NULL;
 	}
 
-#if 0
-	/* Validate the contents as UTF-8 */
-	success = g_utf8_validate (contents,
-	                           len,
-	                           NULL);
-
-	if (!success) {
-
-		g_set_error_literal (error,
-		                     G_IO_ERROR,
-		                     G_IO_ERROR_FAILED,
-		                     "Invalid UTF-8");
-
-		return NULL;
-	}
-#endif
+	/* Mark the start of the input */
+	start = buffer;
 
 	/* Detect and handle magic bytes */
-	if (g_str_has_prefix (contents, "#!")) {
+	if (size > 2)
+	{
+		if (buffer[0] == '#' && buffer[1] == '!')
+		{
+			/* Look for the first newline */
+			while (size > 0 && start[0] != '\n')
+			{
+				start++;
+				size--;
+			}
 
-		/* Look for the beginning of the second line */
-		temp = g_utf8_strchr (contents,
-		                      len,
-		                      (gunichar) '\n');
-		temp = g_utf8_next_char (temp);
-
-		/* Strip the first line */
-		temp = g_strdup_printf ("%s", temp);
-		g_free (contents);
-		contents = temp;
-
-		/* */
-		len = strlen (contents);
+			/* Move past it */
+			start++;
+			size--;
+		}
 	}
 
-	buffer = cattle_buffer_new (len);
-	cattle_buffer_set_contents (buffer, contents);
+	contents = cattle_buffer_new (size);
+	cattle_buffer_set_contents (contents, start);
 
-	g_free (contents);
+	g_free (buffer);
 
-	return buffer;
+	return contents;
 }
 
 /**

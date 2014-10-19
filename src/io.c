@@ -197,43 +197,37 @@ input_handler (CattleInterpreter  *interpreter,
                gpointer            data,
                GError            **error)
 {
+	CattleBuffer *input;
 	GInputStream *stream;
-	GError *inner_error;
-	gchar buffer[INPUT_BUFFER_SIZE];
-	gssize count;
+	GError       *inner_error;
+	gchar         buffer[INPUT_BUFFER_SIZE];
+	gssize        size;
 
 	stream = G_INPUT_STREAM (data);
 
 	inner_error = NULL;
-	count = g_input_stream_read (stream,
-	                             buffer,
-	                             INPUT_BUFFER_SIZE - 1,
-	                             NULL,
-	                             &inner_error);
+	size = g_input_stream_read (stream,
+	                            buffer,
+	                            INPUT_BUFFER_SIZE,
+	                            NULL,
+	                            &inner_error);
 
-	/* Make sure the buffer is null-terminated */
-	buffer[count] = '\0';
-
-	if (inner_error != NULL) {
-
+	if (inner_error != NULL)
+	{
 		g_propagate_error (error,
 		                   inner_error);
 
 		return FALSE;
 	}
 
-	/* Feed the interpreter with the new input, or notify it that the
-	 * end of input has been reached */
-	if (count == 0) {
+	/* Copy the input to a CattleBuffer */
+	input = cattle_buffer_new (size);
+	cattle_buffer_set_contents (input, buffer);
 
-		cattle_interpreter_feed (interpreter,
-		                         NULL);
-	}
-	else {
+	/* Feed the interpreter with the new input */
+	cattle_interpreter_feed (interpreter, input);
 
-		cattle_interpreter_feed (interpreter,
-		                         buffer);
-	}
+	g_object_unref (input);
 
 	return TRUE;
 }
@@ -241,15 +235,16 @@ input_handler (CattleInterpreter  *interpreter,
 /**
  * input_handler_interactive:
  *
- * Retrieve input from the user in an interactive way.
+ * Retrieve input from the user interactively.
  */
 gboolean
 input_handler_interactive (CattleInterpreter  *interpreter,
                            gpointer            data,
                            GError            **error)
 {
-	char *buffer;
-	gchar *temp;
+	CattleBuffer *input;
+	gchar        *buffer;
+	gulong        size;
 
 	/* Use readline to fetch user input. readline is notified of
 	 * the fact that it should not handle the prompt itself, as there
@@ -262,23 +257,28 @@ input_handler_interactive (CattleInterpreter  *interpreter,
 	g_free (prompt);
 	prompt = NULL;
 
-	if (buffer == NULL) {
-
-		cattle_interpreter_feed (interpreter,
-		                         NULL);
+	if (buffer == NULL)
+	{
+		input = cattle_buffer_new (0);
 	}
-	else {
+	else
+	{
+		/* Size of the input */
+		size = strlen (buffer) + 1;
 
-		/* The input fed to the interpreter must retain the newline
-		 * character, but readline strips it, so it has to be
-		 * manually added back */
-		temp = g_strdup_printf ("%s\n", buffer);
+		/* Copy the input, overwriting the trailing null byte
+		 * with the newline that's been stripped by readline */
+		input = cattle_buffer_new (size);
+		cattle_buffer_set_contents (input, buffer);
+		cattle_buffer_set_value (input, size - 1, '\n');
+
 		free (buffer);
-
-		cattle_interpreter_feed (interpreter,
-		                         temp);
-		g_free (temp);
 	}
+
+	/* Feed the interpreter with the new input */
+	cattle_interpreter_feed (interpreter, input);
+
+	g_object_unref (input);
 
 	return TRUE;
 }

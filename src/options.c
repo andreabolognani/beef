@@ -41,18 +41,18 @@ parse_store (const gchar  *option_name,
 
 	if (g_utf8_collate (value, "zero") == 0)
 	{
-		cattle_configuration_set_on_eof_action (configuration,
-		                                        CATTLE_ON_EOF_STORE_ZERO);
+		cattle_configuration_set_end_of_input_action (configuration,
+		                                              CATTLE_END_OF_INPUT_ACTION_STORE_ZERO);
 	}
 	else if (g_utf8_collate (value, "eof") == 0)
 	{
-		cattle_configuration_set_on_eof_action (configuration,
-		                                        CATTLE_ON_EOF_STORE_EOF);
+		cattle_configuration_set_end_of_input_action (configuration,
+		                                              CATTLE_END_OF_INPUT_ACTION_STORE_EOF);
 	}
 	else if (g_utf8_collate (value, "same") == 0)
 	{
-		cattle_configuration_set_on_eof_action (configuration,
-		                                        CATTLE_ON_EOF_DO_NOTHING);
+		cattle_configuration_set_end_of_input_action (configuration,
+		                                              CATTLE_END_OF_INPUT_ACTION_DO_NOTHING);
 	}
 	else
 	{

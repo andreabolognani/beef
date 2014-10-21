@@ -1,4 +1,4 @@
-AC_INIT([Beef], [1.0.0], [eof@kiyuko.org], [beef])
+AC_INIT([Beef], [1.0.1], [eof@kiyuko.org], [beef])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE

@@ -179,7 +179,6 @@ output_handler (CattleInterpreter  *interpreter,
 {
 	GOutputStream *stream;
 	GError        *inner_error;
-	gchar         *temp;
 
 	if (G_IS_OUTPUT_STREAM (data))
 	{

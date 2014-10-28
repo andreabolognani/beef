@@ -65,10 +65,8 @@ prompt_append (gint8 c)
 		/* The buffer needs to be extended */
 		temp = (gchar *) g_slice_alloc (prompt_length + PROMPT_BUFFER_SIZE);
 
-		for (i = 0; i < prompt_length; i++)
-		{
-			temp[i] = prompt[i];
-		}
+		/* Copy existing data */
+		memcpy (temp, prompt, prompt_length * sizeof (gint8));
 
 		if (prompt != NULL)
 		{

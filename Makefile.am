@@ -25,7 +25,7 @@ DISTCLEANFILES = \
 
 ChangeLog:
 	$(AM_V_GEN) \
-	(GIT_DIR=$(top_srcdir)/.git $(top_srcdir)/missing --run git log --stat) >$@.tmp 2>/dev/null\
+	(GIT_DIR=$(top_srcdir)/.git $(top_srcdir)/missing --run git log --color=never --stat) >$@.tmp 2>/dev/null\
 	&& mv -f $@.tmp $@ \
 	|| ($(RM) $@.tmp; \
 	echo "         Could not generate ChangeLog, your ChangeLog may be outdated" >&2)

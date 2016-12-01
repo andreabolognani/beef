@@ -9,4 +9,6 @@ Beef depends on the following libraries and programs:
 
 	* GNU Readline;
 
-	* the pkg-config script.
+	* the pkg-config script;
+
+	* pandoc.

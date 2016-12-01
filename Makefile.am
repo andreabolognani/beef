@@ -15,7 +15,6 @@ doc_DATA = \
 
 EXTRA_DIST = \
 	$(doc_DATA) \
-	HACKING.markdown \
 	INSTALL.markdown \
 	$(NULL)
 

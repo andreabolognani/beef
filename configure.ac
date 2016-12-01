@@ -11,7 +11,8 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
-AC_CHECK_PROG([PANDOC], [pandoc], [pandoc], [])
+AC_PATH_PROG([PANDOC], [pandoc])
+test "$PANDOC" || AC_MSG_ERROR([pandoc not found])
 
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED
                         gobject-2.0 >= $GLIB_REQUIRED

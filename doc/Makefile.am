@@ -4,7 +4,7 @@ man_MANS = \
 	beef.1 \
 	$(NULL)
 
-beef.1: beef.1.markdown
+%.1: %.1.markdown
 	$(AM_V_GEN) \
 	$(PANDOC) -s -w man -o $@.tmp $< \
 	&& mv -f $@.tmp $@

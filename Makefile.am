@@ -19,15 +19,20 @@ EXTRA_DIST = \
 	INSTALL.md \
 	$(NULL)
 
-DISTCLEANFILES = \
+CLEANFILES = \
 	ChangeLog \
 	$(NULL)
 
 ChangeLog:
 	$(AM_V_GEN) \
-	(GIT_DIR=$(top_srcdir)/.git $(top_srcdir)/missing --run git log --color=never --stat) >$@.tmp 2>/dev/null\
-	&& mv -f $@.tmp $@ \
-	|| ($(RM) $@.tmp; \
-	echo "         Could not generate ChangeLog, your ChangeLog may be outdated" >&2)
+	if test -d "$(top_srcdir)/.git"; \
+	then \
+	  GIT_DIR="$(top_srcdir)/.git" \
+	  $(top_srcdir)/missing \
+	    --run git log --color=never --stat \
+	  >$@.tmp \
+	  && mv -f $@.tmp $@ \
+	  || ( $(RM) -f $@.tmp; false ) \
+	fi
 
 .PHONY: ChangeLog

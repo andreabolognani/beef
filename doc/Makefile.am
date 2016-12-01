@@ -12,7 +12,3 @@ beef.1: beef.1.markdown
 DISTCLEANFILES = \
 	$(man_MANS) \
 	$(NULL)
-
-EXTRA_DIST = \
-	$(man_MANS) \
-	$(NULL)

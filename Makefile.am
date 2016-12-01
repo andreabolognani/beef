@@ -6,17 +6,17 @@ SUBDIRS = \
 	$(NULL)
 
 doc_DATA = \
-	AUTHORS.md \
+	AUTHORS.markdown \
 	ChangeLog \
 	COPYING \
-	NEWS.md \
-	README.md \
+	NEWS.markdown \
+	README.markdown \
 	$(NULL)
 
 EXTRA_DIST = \
 	$(doc_DATA) \
-	HACKING.md \
-	INSTALL.md \
+	HACKING.markdown \
+	INSTALL.markdown \
 	$(NULL)
 
 CLEANFILES = \

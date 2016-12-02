@@ -22,11 +22,16 @@ available on the system; the same applies to output, where it makes sense.
 GNU Readline is used for interactive user input.
 
 
-Contact information
--------------------
+Resources
+---------
 
-You can contact me anytime at the mail address <eof@kiyuko.org> if you
-need any information about Beef. Suggestion are greatly appreciated.
+The [project's website][1] contains pointers to the canonical Git
+repository, which you should clone if you're interested in hacking on
+Beef, and the official release archives, which you should use otherwise.
+
+Several distributions provide packages for Beef: if your distribution is
+among those, you should use your package manager to install Beef instead
+of building from source.
 
 
 License
@@ -36,3 +41,6 @@ This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
+
+
+[1]: http://kiyuko.org/software/beef

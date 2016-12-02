@@ -1,10 +1,5 @@
 NULL =
 
-INCLUDES = \
-	-I$(top_builddir) \
-	-I$(top_srcdir) \
-	$(NULL)
-
 AM_CPPFLAGS = \
 	-DGSEAL_ENABLE \
 	-DG_DISABLE_DEPRECATED \

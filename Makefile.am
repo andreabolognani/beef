@@ -5,7 +5,7 @@ SUBDIRS = \
 	src \
 	$(NULL)
 
-doc_DATA = \
+dist_doc_DATA = \
 	AUTHORS.markdown \
 	ChangeLog \
 	COPYING \
@@ -14,7 +14,6 @@ doc_DATA = \
 	$(NULL)
 
 EXTRA_DIST = \
-	$(doc_DATA) \
 	INSTALL.markdown \
 	$(NULL)
 

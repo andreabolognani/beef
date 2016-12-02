@@ -1,29 +1,32 @@
 #!/bin/sh
 
-LIBTOOLIZE="libtoolize -f -c"
+LIBTOOLIZE="libtoolize -f"
 ACLOCAL="aclocal"
 AUTOHEADER="autoheader -f"
 AUTOCONF="autoconf -f"
-AUTOMAKE="automake -f -a -c --foreign"
+AUTOMAKE="automake -f -a --foreign"
 
-runcmd()
+run()
 {
-	CMD="$1"
-	OUT=$( ${CMD} 2>&1 )
+	command="$1"
 
-	if [ $? -ne 0 ]; then
+	output=$($command 2>&1)
 
-		CMD=$( echo "${CMD}" | cut -d ' ' -f 1)
+	if test $? -ne 0
+	then
+		command=$(echo "$command" | cut -d ' ' -f 1)
 
-		echo "${CMD} failed:" >&2
-		echo "${OUT}" >&2
+		echo "$command failed:" >&2
+		echo "$output" >&2
 
 		exit 1
 	fi
 }
 
-runcmd "${LIBTOOLIZE}"
-runcmd "${ACLOCAL}"
-runcmd "${AUTOHEADER}"
-runcmd "${AUTOCONF}"
-runcmd "${AUTOMAKE}"
+run "$LIBTOOLIZE"
+run "$ACLOCAL"
+run "$AUTOHEADER"
+run "$AUTOCONF"
+run "$AUTOMAKE"
+
+exit 0

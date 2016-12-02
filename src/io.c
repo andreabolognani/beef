@@ -157,7 +157,7 @@ load_file_contents (GFile   *file,
 	}
 
 	contents = cattle_buffer_new (size);
-	cattle_buffer_set_contents (contents, start);
+	cattle_buffer_set_contents (contents, (gint8 *) start);
 
 	g_free (buffer);
 
@@ -253,7 +253,7 @@ input_handler (CattleInterpreter  *interpreter,
 
 	/* Copy the input to a CattleBuffer */
 	input = cattle_buffer_new (size);
-	cattle_buffer_set_contents (input, buffer);
+	cattle_buffer_set_contents (input, (gint8 *) buffer);
 
 	/* Feed the interpreter with the new input */
 	cattle_interpreter_feed (interpreter, input);
@@ -299,7 +299,7 @@ input_handler_interactive (CattleInterpreter  *interpreter,
 		/* Copy the input, overwriting the trailing null byte
 		 * with the newline that's been stripped by readline */
 		input = cattle_buffer_new (size);
-		cattle_buffer_set_contents (input, buffer);
+		cattle_buffer_set_contents (input, (gint8 *) buffer);
 		cattle_buffer_set_value (input, size - 1, '\n');
 
 		free (buffer);

@@ -1,6 +1,6 @@
 NULL =
 
-man_MANS = \
+nodist_man_MANS = \
 	beef.1 \
 	$(NULL)
 
@@ -10,5 +10,5 @@ man_MANS = \
 	&& mv -f $@.tmp $@
 
 DISTCLEANFILES = \
-	$(man_MANS) \
+	$(nodist_man_MANS) \
 	$(NULL)

@@ -75,10 +75,10 @@ parse_store (const gchar  *option_name,
  * Parse the argument of the --enable-debugging option.
  */
 static gboolean
-parse_debugging (const gchar *option_name,
-                 const gchar  *value,
+parse_debugging (const gchar  *option_name G_GNUC_UNUSED,
+                 const gchar  *value G_GNUC_UNUSED,
                  gpointer      data,
-                 GError      **error)
+                 GError      **error G_GNUC_UNUSED)
 {
 	CattleConfiguration *configuration;
 	OptionValues        *option_values;
@@ -98,10 +98,10 @@ parse_debugging (const gchar *option_name,
  * Parse the argument for the --output-file option.
  */
 static gboolean
-parse_output_filename (const gchar  *option_name,
+parse_output_filename (const gchar  *option_name G_GNUC_UNUSED,
                        const gchar  *value,
                        gpointer      data,
-                       GError      **error)
+                       GError      **error G_GNUC_UNUSED)
 {
 	OptionValues *option_values;
 
@@ -125,10 +125,10 @@ parse_output_filename (const gchar  *option_name,
  * Parse the argument for the --input-file option.
  */
 static gboolean
-parse_input_filename (const gchar  *option_name,
+parse_input_filename (const gchar  *option_name G_GNUC_UNUSED,
                       const gchar  *value,
                       gpointer      data,
-                      GError      **error)
+                      GError      **error G_GNUC_UNUSED)
 {
 	OptionValues *option_values;
 
@@ -189,7 +189,7 @@ static GOptionEntry option_entries[] =
 		"Read program's input from FILE",
 		"FILE"
 	},
-	{NULL}
+	{ NULL, '\0', 0, 0, NULL, NULL, NULL }
 };
 
 /**

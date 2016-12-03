@@ -50,7 +50,6 @@ static void
 prompt_append (gint8 c)
 {
 	gchar  *temp;
-	gulong  i;
 
 	if (prompt == NULL)
 	{
@@ -170,7 +169,7 @@ load_file_contents (GFile   *file,
  * Dump interpreter's output to a GOutputStream.
  */
 gboolean
-output_handler (CattleInterpreter  *interpreter,
+output_handler (CattleInterpreter  *interpreter G_GNUC_UNUSED,
                 gint8               output,
                 gpointer            data,
                 GError            **error)
@@ -270,8 +269,8 @@ input_handler (CattleInterpreter  *interpreter,
  */
 gboolean
 input_handler_interactive (CattleInterpreter  *interpreter,
-                           gpointer            data,
-                           GError            **error)
+                           gpointer            data G_GNUC_UNUSED,
+                           GError            **error G_GNUC_UNUSED)
 {
 	CattleBuffer *input;
 	gchar        *buffer;

@@ -44,6 +44,30 @@ dnl **************************
 dnl *** Check for readline ***
 dnl **************************
 
+AC_ARG_WITH([readline],
+            [AS_HELP_STRING([--with-readline],
+                            [readline installation path, eg. /usr/local])],
+            [],
+            [with_readline=yes])
+
+READLINE_CFLAGS=
+READLINE_LIBS=
+
+if test "x$with_readline" = "xno"
+then
+    AC_MSG_ERROR([readline is required])
+fi
+
+if test "x$with_readline" != "xyes" && test "x$with_readline" != "xcheck"
+then
+    READLINE_CFLAGS="-I$with_readline/include"
+    READLINE_LIBS="-L$with_readline/lib"
+    old_CFLAGS=$CFLAGS
+    old_LDFLAGS=$LDFLAGS
+    CFLAGS="$CFLAGS $READLINE_CFLAGS"
+    LDFLAGS="$LDFLAGS $READLINE_LIBS"
+fi
+
 AC_CHECK_LIB([readline],
              [readline],
              ,
@@ -51,6 +75,15 @@ AC_CHECK_LIB([readline],
 AC_CHECK_HEADER([readline/readline.h],
                 ,
                 [AC_MSG_ERROR([readline headers not found])])
+
+if test "x$with_readline" != "xyes" && test "x$with_readline" != "xcheck"
+then
+    CFLAGS=$old_CFLAGS
+    LDFLAGS=$old_LDFLAGS
+fi
+
+AC_SUBST(READLINE_CFLAGS)
+AC_SUBST(READLINE_LIBS)
 
 dnl ***************************
 dnl *** Create output files ***

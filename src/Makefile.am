@@ -7,6 +7,10 @@ AM_CPPFLAGS = \
 	$(READLINE_CFLAGS) \
 	$(NULL)
 
+AM_CFLAGS = \
+	$(WARN_CFLAGS) \
+	$(NULL)
+
 AM_LDFLAGS = \
 	$(GLIB_LIBS) \
 	$(CATTLE_LIBS) \

@@ -85,6 +85,14 @@ fi
 AC_SUBST(READLINE_CFLAGS)
 AC_SUBST(READLINE_LIBS)
 
+dnl ***********************************
+dnl *** Enable compilation warnings ***
+dnl ***********************************
+
+WARN_CFLAGS="-Wall -Wextra"
+
+AC_SUBST(WARN_CFLAGS)
+
 dnl ***************************
 dnl *** Create output files ***
 dnl ***************************

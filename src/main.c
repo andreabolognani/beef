@@ -22,6 +22,9 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 #include <cattle/cattle.h>
+/* Remove once readline 7.0, which (correctly) includes
+ * the header itself, is common enough */
+#include <stdio.h>
 #include <readline/readline.h>
 #include <config.h>
 #include <unistd.h>

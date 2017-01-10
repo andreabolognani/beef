@@ -18,6 +18,9 @@
  * Homepage: http://kiyuko.org/software/beef
  */
 
+/* Remove once readline 7.0, which (correctly) includes
+ * the header itself, is common enough */
+#include <stdio.h>
 #include <readline/readline.h>
 #include <stdlib.h>
 #include <string.h>

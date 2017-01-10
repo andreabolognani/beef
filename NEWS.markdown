@@ -1,3 +1,20 @@
+Changes from Beef 1.0.1 to 1.0.2
+--------------------------------
+
+  * Portability fixes
+
+    - Compiling Beef on platforms that ship outdated readline
+      releases, install third-party libraries under non-default
+      paths or use Clang as the compiler should now require no
+      source patching. FreeBSD, for example, does all three
+
+  * Enable compiler warnings
+
+    - Fix code quality issues uncovered by doing so
+
+  * Build system cleanups and improvements
+
+
 Changes from Beef 1.0.0 to 1.0.1
 --------------------------------
 

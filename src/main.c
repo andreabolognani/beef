@@ -79,8 +79,7 @@ main (gint    argc,
     g_set_prgname ("beef");
 
     /* Set up a configuration group for commanline options */
-    option_values = g_new0 (OptionValues, 1);
-    option_values->configuration = cattle_configuration_new ();
+    option_values = option_values_new ();
     context = g_option_context_new ("FILE - Flexible Brainfuck interpreter");
     group = g_option_group_new ("",
                                 "",
@@ -100,10 +99,7 @@ main (gint    argc,
         display_error (NULL,
                        error->message);
 
-        g_object_unref (option_values->configuration);
-        g_free (option_values->output_filename);
-        g_free (option_values->input_filename);
-        g_free (option_values);
+        option_values_free (option_values);
 
         return 1;
     }
@@ -113,10 +109,7 @@ main (gint    argc,
     {
         g_printerr ("Usage: %s [OPTION...] FILE\n", g_get_prgname ());
 
-        g_object_unref (option_values->configuration);
-        g_free (option_values->output_filename);
-        g_free (option_values->input_filename);
-        g_free (option_values);
+        option_values_free (option_values);
 
         return 1;
     }
@@ -134,10 +127,7 @@ main (gint    argc,
         display_error (argv[1],
                        error->message);
 
-        g_object_unref (option_values->configuration);
-        g_free (option_values->output_filename);
-        g_free (option_values->input_filename);
-        g_free (option_values);
+        option_values_free (option_values);
 
         return 1;
     }
@@ -159,10 +149,7 @@ main (gint    argc,
                        error->message);
 
         g_object_unref (interpreter);
-        g_object_unref (option_values->configuration);
-        g_free (option_values->output_filename);
-        g_free (option_values->input_filename);
-        g_free (option_values);
+        option_values_free (option_values);
 
         return 1;
     }
@@ -174,7 +161,6 @@ main (gint    argc,
      * interpreter */
     cattle_interpreter_set_configuration (interpreter,
                                           option_values->configuration);
-    g_object_unref (option_values->configuration);
 
     /* If output to file was chosen, open the selected output file and
      * assign a suitable output handler to the interpreter */
@@ -197,9 +183,7 @@ main (gint    argc,
                            error->message);
 
             g_object_unref (interpreter);
-            g_free (option_values->output_filename);
-            g_free (option_values->input_filename);
-            g_free (option_values);
+            option_values_free (option_values);
 
             return 1;
         }
@@ -229,9 +213,7 @@ main (gint    argc,
 
             g_object_unref (output_stream);
             g_object_unref (interpreter);
-            g_free (option_values->output_filename);
-            g_free (option_values->input_filename);
-            g_free (option_values);
+            option_values_free (option_values);
 
             return 1;
         }
@@ -274,9 +256,7 @@ main (gint    argc,
         g_object_unref (input_stream);
         g_object_unref (output_stream);
         g_object_unref (interpreter);
-        g_free (option_values->output_filename);
-        g_free (option_values->input_filename);
-        g_free (option_values);
+        option_values_free (option_values);
 
         return 1;
     }
@@ -297,9 +277,7 @@ main (gint    argc,
 
             g_object_unref (input_stream);
             g_object_unref (interpreter);
-            g_free (option_values->output_filename);
-            g_free (option_values->input_filename);
-            g_free (option_values);
+            option_values_free (option_values);
 
             return 1;
         }
@@ -320,18 +298,14 @@ main (gint    argc,
                            error->message);
 
             g_object_unref (interpreter);
-            g_free (option_values->output_filename);
-            g_free (option_values->input_filename);
-            g_free (option_values);
+            option_values_free (option_values);
 
             return 1;
         }
     }
 
     g_object_unref (interpreter);
-    g_free (option_values->output_filename);
-    g_free (option_values->input_filename);
-    g_free (option_values);
+    option_values_free (option_values);
 
     return 0;
 }

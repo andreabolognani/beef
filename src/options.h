@@ -34,6 +34,11 @@ struct _OptionValues
     gchar               *input_filename;
 };
 
+OptionValues* option_values_new  (void);
+void          option_values_free (OptionValues *option_values);
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (OptionValues, option_values_free);
+
 GOptionEntry* get_option_entries (void);
 
 G_END_DECLS

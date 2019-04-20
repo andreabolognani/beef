@@ -22,6 +22,37 @@
 #include "options.h"
 
 /**
+ * option_values_new:
+ *
+ * Allocate a new #OptionValues.
+ */
+OptionValues*
+option_values_new (void)
+{
+    OptionValues *self;
+
+    self = g_new0 (OptionValues, 1);
+
+    self->configuration = cattle_configuration_new ();
+
+    return self;
+}
+
+/**
+ * option_values_free:
+ *
+ * Free an existing #OptionValues.
+ */
+void
+option_values_free (OptionValues *self)
+{
+    g_object_unref (self->configuration);
+    g_free (self->output_filename);
+    g_free (self->input_filename);
+    g_free (self);
+}
+
+/**
  * parse_store:
  *
  * Parse the argument of the --store option.

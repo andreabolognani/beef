@@ -43,4 +43,4 @@ the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
 
 
-[1]: http://kiyuko.org/software/beef
+[1]: https://kiyuko.org/software/beef

@@ -30,6 +30,7 @@ typedef struct _OptionValues OptionValues;
 struct _OptionValues
 {
     CattleConfiguration *configuration;
+    gchar               *program_filename;
     gchar               *output_filename;
     gchar               *input_filename;
 };

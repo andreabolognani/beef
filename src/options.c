@@ -48,6 +48,7 @@ void
 option_values_free (OptionValues *self)
 {
     g_object_unref (self->configuration);
+    g_free (self->program_filename);
     g_free (self->output_filename);
     g_free (self->input_filename);
     g_free (self);
@@ -178,6 +179,48 @@ parse_input_filename (const gchar  *option_name G_GNUC_UNUSED,
 }
 
 /**
+ * parse_program_filename:
+ *
+ * Parse the remaining arguments (program filename).
+ */
+static gboolean
+parse_program_filename (const gchar  *option_name G_GNUC_UNUSED,
+                        const gchar  *value,
+                        gpointer      data,
+                        GError      **error)
+{
+    OptionValues *option_values;
+
+    option_values = (OptionValues*) data;
+
+    if (option_values->program_filename)
+    {
+        g_set_error (error,
+                     G_OPTION_ERROR,
+                     G_OPTION_ERROR_FAILED,
+                     "Only one program can be executed at a time");
+
+        return FALSE;
+    }
+
+    if (g_utf8_collate (value, "-") == 0)
+    {
+        g_set_error (error,
+                     G_OPTION_ERROR,
+                     G_OPTION_ERROR_FAILED,
+                     "Reading the program from stdin is not supported");
+
+        return FALSE;
+    }
+    else
+    {
+        option_values->program_filename = g_strdup (value);
+    }
+
+    return TRUE;
+}
+
+/**
  * option_entries:
  *
  * Commandline options definition.
@@ -218,6 +261,15 @@ static GOptionEntry option_entries[] =
         G_OPTION_ARG_CALLBACK,
         parse_input_filename,
         "Read program's input from FILE",
+        "FILE"
+    },
+    {
+        G_OPTION_REMAINING,
+        0,
+        G_OPTION_FLAG_FILENAME,
+        G_OPTION_ARG_CALLBACK,
+        parse_program_filename,
+        "Read program from FILE",
         "FILE"
     },
     { NULL, 0, 0, 0, NULL, NULL, NULL }

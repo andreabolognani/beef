@@ -80,7 +80,7 @@ main (gint    argc,
 
     /* Set up a configuration group for commanline options */
     option_values = option_values_new ();
-    context = g_option_context_new ("FILE - Flexible Brainfuck interpreter");
+    context = g_option_context_new ("- Flexible Brainfuck interpreter");
     group = g_option_group_new ("",
                                 "",
                                 "",
@@ -103,7 +103,7 @@ main (gint    argc,
     }
 
     /* Make sure a file has been specified on the commandline */
-    if (argc != 2)
+    if (!option_values->program_filename)
     {
         g_printerr ("Usage: %s [OPTION...] FILE\n", g_get_prgname ());
 
@@ -114,7 +114,7 @@ main (gint    argc,
         g_autoptr (GFile) file = NULL;
 
         /* Load file contents */
-        file = g_file_new_for_commandline_arg (argv[1]);
+        file = g_file_new_for_commandline_arg (option_values->program_filename);
 
         error = NULL;
         buffer = load_file_contents (file,
@@ -122,7 +122,7 @@ main (gint    argc,
 
         if (buffer == NULL)
         {
-            display_error (argv[1],
+            display_error (option_values->program_filename,
                            error->message);
 
             return 1;
@@ -140,7 +140,7 @@ main (gint    argc,
 
     if (!success)
     {
-        display_error (argv[1],
+        display_error (option_values->program_filename,
                        error->message);
 
         return 1;
@@ -234,7 +234,7 @@ main (gint    argc,
 
     if (!success)
     {
-        display_error (argv[1],
+        display_error (option_values->program_filename,
                        error->message);
 
         return 1;

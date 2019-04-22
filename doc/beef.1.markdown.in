@@ -97,13 +97,13 @@ in the source file, runtime input will be ignored.
 
 The classic Hello World program could be written in Brainfuck as
 
-		++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.++++++
-		+..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
+    ++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.++++++
+    +..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
 
 The following Brainfuck program can be used to replace the _cat_(1) utility:
 
-		#!/usr/bin/beef
-		,[.,]
+    #!/usr/bin/beef
+    ,[.,]
 
 That's of course assuming you don't need any of _cat_(1)'s fancy commandline
 options, you have a shell with working I/O redirection and a sense of humor.

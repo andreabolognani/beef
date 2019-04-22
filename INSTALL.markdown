@@ -3,12 +3,12 @@ Prerequisites
 
 Beef depends on the following libraries and programs:
 
-	* the GLib library, with its GObject and GIO modules;
+  * the GLib library, with its GObject and GIO modules;
 
-	* the Cattle library;
+  * the Cattle library;
 
-	* GNU Readline;
+  * GNU Readline;
 
-	* the pkg-config script;
+  * the pkg-config script;
 
-	* pandoc.
+  * pandoc.

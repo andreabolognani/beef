@@ -29,9 +29,9 @@ typedef struct _OptionValues OptionValues;
 
 struct _OptionValues
 {
-	CattleConfiguration *configuration;
-	gchar               *output_filename;
-	gchar               *input_filename;
+    CattleConfiguration *configuration;
+    gchar               *output_filename;
+    gchar               *input_filename;
 };
 
 GOptionEntry* get_option_entries (void);

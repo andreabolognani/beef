@@ -23,6 +23,7 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 #include <string.h>
+#include "compat.h"
 #include "io.h"
 
 /**

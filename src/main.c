@@ -27,6 +27,7 @@
 #include <readline/readline.h>
 #include <config.h>
 #include <unistd.h>
+#include "compat.h"
 #include "io.h"
 #include "options.h"
 

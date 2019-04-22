@@ -22,6 +22,7 @@ bin_PROGRAMS = \
 	$(NULL)
 
 beef_SOURCES = \
+	compat.h \
 	io.h \
 	io.c \
 	main.c \

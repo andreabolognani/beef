@@ -19,6 +19,7 @@
 
 #include <glib-object.h>
 #include <cattle/cattle.h>
+#include "compat.h"
 #include "options.h"
 
 /**

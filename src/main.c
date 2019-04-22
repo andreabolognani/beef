@@ -76,10 +76,6 @@ main (gint    argc,
     OptionValues      *option_values;
     gboolean           success;
 
-#if !GLIB_CHECK_VERSION(2, 36, 0)
-    g_type_init ();
-#endif
-
     g_set_prgname ("beef");
 
     /* Set up a configuration group for commanline options */

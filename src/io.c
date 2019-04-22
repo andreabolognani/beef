@@ -111,12 +111,12 @@ CattleBuffer*
 load_file_contents (GFile   *file,
                     GError **error)
 {
-    CattleBuffer *contents;
-    GError       *inner_error;
-    gchar        *buffer;
-    gchar        *start;
-    gsize         size;
-    gboolean      success;
+    CattleBuffer     *contents;
+    GError           *inner_error;
+    g_autofree gchar *buffer;
+    gchar            *start;
+    gsize             size;
+    gboolean          success;
 
     g_return_val_if_fail (G_IS_FILE (file), NULL);
     g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -161,8 +161,6 @@ load_file_contents (GFile   *file,
 
     contents = cattle_buffer_new (size);
     cattle_buffer_set_contents (contents, (gint8 *) start);
-
-    g_free (buffer);
 
     return contents;
 }
@@ -231,11 +229,11 @@ input_handler (CattleInterpreter  *interpreter,
                gpointer            data,
                GError            **error)
 {
-    CattleBuffer *input;
-    GInputStream *stream;
-    GError       *inner_error;
-    gchar         buffer[INPUT_BUFFER_SIZE];
-    gssize        size;
+    g_autoptr (CattleBuffer)  input = NULL;
+    GInputStream             *stream;
+    GError                   *inner_error;
+    gchar                     buffer[INPUT_BUFFER_SIZE];
+    gssize                    size;
 
     stream = G_INPUT_STREAM (data);
 
@@ -261,8 +259,6 @@ input_handler (CattleInterpreter  *interpreter,
     /* Feed the interpreter with the new input */
     cattle_interpreter_feed (interpreter, input);
 
-    g_object_unref (input);
-
     return TRUE;
 }
 
@@ -276,9 +272,9 @@ input_handler_interactive (CattleInterpreter  *interpreter,
                            gpointer            data G_GNUC_UNUSED,
                            GError            **error G_GNUC_UNUSED)
 {
-    CattleBuffer *input;
-    gchar        *buffer;
-    gulong        size;
+    g_autoptr (CattleBuffer)  input = NULL;
+    gchar                    *buffer;
+    gulong                    size;
 
     /* Use readline to fetch user input. readline is notified of
      * the fact that it should not handle the prompt itself, as there
@@ -310,8 +306,6 @@ input_handler_interactive (CattleInterpreter  *interpreter,
 
     /* Feed the interpreter with the new input */
     cattle_interpreter_feed (interpreter, input);
-
-    g_object_unref (input);
 
     return TRUE;
 }

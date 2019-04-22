@@ -65,17 +65,16 @@ gint
 main (gint    argc,
       gchar **argv)
 {
-    CattleInterpreter *interpreter;
-    CattleProgram     *program;
-    CattleBuffer      *buffer;
-    GFile             *file;
-    GFileOutputStream *output_stream;
-    GFileInputStream  *input_stream;
-    GOptionContext    *context;
-    GOptionGroup      *group;
-    GError            *error;
-    OptionValues      *option_values;
-    gboolean           success;
+    g_autoptr (CattleInterpreter)  interpreter = NULL;
+    g_autoptr (CattleProgram)      program = NULL;
+    g_autoptr (CattleBuffer)       buffer = NULL;
+    g_autoptr (GFileOutputStream)  output_stream = NULL;
+    g_autoptr (GFileInputStream)   input_stream = NULL;
+    g_autoptr (GError)             error = NULL;
+    g_autoptr (OptionValues)       option_values = NULL;
+    g_autoptr (GOptionContext)     context = NULL;
+    GOptionGroup                  *group;
+    gboolean                       success;
 
     g_set_prgname ("beef");
 
@@ -100,8 +99,6 @@ main (gint    argc,
         display_error (NULL,
                        error->message);
 
-        option_values_free (option_values);
-
         return 1;
     }
 
@@ -110,27 +107,26 @@ main (gint    argc,
     {
         g_printerr ("Usage: %s [OPTION...] FILE\n", g_get_prgname ());
 
-        option_values_free (option_values);
-
         return 1;
     }
-
-    /* Load file contents */
-    file = g_file_new_for_commandline_arg (argv[1]);
-
-    error = NULL;
-    buffer = load_file_contents (file,
-                                 &error);
-    g_object_unref (file);
-
-    if (buffer == NULL)
+    else
     {
-        display_error (argv[1],
-                       error->message);
+        g_autoptr (GFile) file = NULL;
 
-        option_values_free (option_values);
+        /* Load file contents */
+        file = g_file_new_for_commandline_arg (argv[1]);
 
-        return 1;
+        error = NULL;
+        buffer = load_file_contents (file,
+                                     &error);
+
+        if (buffer == NULL)
+        {
+            display_error (argv[1],
+                           error->message);
+
+            return 1;
+        }
     }
 
     interpreter = cattle_interpreter_new ();
@@ -141,22 +137,14 @@ main (gint    argc,
     success = cattle_program_load (program,
                                    buffer,
                                    &error);
-    g_object_unref (program);
-    g_object_unref (buffer);
 
     if (!success)
     {
         display_error (argv[1],
                        error->message);
 
-        g_object_unref (interpreter);
-        option_values_free (option_values);
-
         return 1;
     }
-
-    output_stream = NULL;
-    input_stream = NULL;
 
     /* Assign configuration created using commandline options to the
      * interpreter */
@@ -167,6 +155,8 @@ main (gint    argc,
      * assign a suitable output handler to the interpreter */
     if (option_values->output_filename != NULL)
     {
+        g_autoptr (GFile) file = NULL;
+
         file = g_file_new_for_commandline_arg (option_values->output_filename);
 
         error = NULL;
@@ -176,15 +166,11 @@ main (gint    argc,
                                         G_FILE_CREATE_NONE,
                                         NULL,
                                         &error);
-        g_object_unref (file);
 
         if (error != NULL)
         {
             display_error (option_values->output_filename,
                            error->message);
-
-            g_object_unref (interpreter);
-            option_values_free (option_values);
 
             return 1;
         }
@@ -199,22 +185,19 @@ main (gint    argc,
      * assign a suitable input handler to the interpreter */
     if (option_values->input_filename != NULL)
     {
+        g_autoptr (GFile) file = NULL;
+
         file = g_file_new_for_commandline_arg (option_values->input_filename);
 
         error = NULL;
         input_stream = g_file_read (file,
                                     NULL,
                                     &error);
-        g_object_unref (file);
 
         if (error != NULL)
         {
             display_error (option_values->input_filename,
                            error->message);
-
-            g_object_unref (output_stream);
-            g_object_unref (interpreter);
-            option_values_free (option_values);
 
             return 1;
         }
@@ -254,11 +237,6 @@ main (gint    argc,
         display_error (argv[1],
                        error->message);
 
-        g_object_unref (input_stream);
-        g_object_unref (output_stream);
-        g_object_unref (interpreter);
-        option_values_free (option_values);
-
         return 1;
     }
 
@@ -269,16 +247,11 @@ main (gint    argc,
         g_output_stream_close (G_OUTPUT_STREAM (output_stream),
                                NULL,
                                &error);
-        g_object_unref (output_stream);
 
         if (error != NULL)
         {
             display_error (option_values->output_filename,
                            error->message);
-
-            g_object_unref (input_stream);
-            g_object_unref (interpreter);
-            option_values_free (option_values);
 
             return 1;
         }
@@ -291,22 +264,15 @@ main (gint    argc,
         g_input_stream_close (G_INPUT_STREAM (input_stream),
                               NULL,
                               &error);
-        g_object_unref (input_stream);
 
         if (error != NULL) {
 
             display_error (option_values->input_filename,
                            error->message);
 
-            g_object_unref (interpreter);
-            option_values_free (option_values);
-
             return 1;
         }
     }
-
-    g_object_unref (interpreter);
-    option_values_free (option_values);
 
     return 0;
 }

@@ -169,7 +169,7 @@ load_file_contents (GFile   *file,
 /**
  * output_handler:
  *
- * Dump interpreter's output to a GOutputStream.
+ * Dump interpreter's output to a #GOutputStream.
  */
 gboolean
 output_handler (CattleInterpreter  *interpreter G_GNUC_UNUSED,
@@ -223,7 +223,7 @@ output_handler (CattleInterpreter  *interpreter G_GNUC_UNUSED,
 /**
  * input_handler:
  *
- * Read interpreter's input from a GInputStream.
+ * Read interpreter's input from a #GInputStream.
  */
 gboolean
 input_handler (CattleInterpreter  *interpreter,

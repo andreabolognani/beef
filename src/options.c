@@ -188,7 +188,7 @@ static GOptionEntry option_entries[] =
         "Read program's input from FILE",
         "FILE"
     },
-    { NULL, '\0', 0, 0, NULL, NULL, NULL }
+    { NULL, 0, 0, 0, NULL, NULL, NULL }
 };
 
 /**

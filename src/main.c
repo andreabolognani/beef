@@ -102,14 +102,10 @@ main (gint    argc,
         return 1;
     }
 
-    /* Make sure a file has been specified on the commandline */
-    if (!option_values->program_filename)
-    {
-        g_printerr ("Usage: %s [OPTION...] FILE\n", g_get_prgname ());
-
-        return 1;
-    }
-    else
+    /* The program will be provided either as a file name (in which case
+     * we need to load it from there) or directly on the command line.
+     * The option parser makes sure we have either one or the other */
+    if (option_values->program_filename)
     {
         g_autoptr (GFile) file = NULL;
 
@@ -127,6 +123,21 @@ main (gint    argc,
 
             return 1;
         }
+    }
+    else if (option_values->program)
+    {
+        gulong size;
+
+        size = strlen (option_values->program);
+
+        buffer = cattle_buffer_new (size);
+        cattle_buffer_set_contents(buffer, (gint8 *) option_values->program);
+    }
+    else
+    {
+        g_printerr ("Usage: %s [OPTION...] FILE\n", g_get_prgname ());
+
+        return 1;
     }
 
     interpreter = cattle_interpreter_new ();

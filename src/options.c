@@ -48,6 +48,7 @@ void
 option_values_free (OptionValues *self)
 {
     g_object_unref (self->configuration);
+    g_free (self->program);
     g_free (self->program_filename);
     g_free (self->output_filename);
     g_free (self->input_filename);
@@ -125,6 +126,36 @@ parse_debugging (const gchar  *option_name G_GNUC_UNUSED,
 }
 
 /**
+ * parse_program:
+ *
+ * Parse the argument for the --program option.
+ */
+static gboolean
+parse_program (const gchar  *option_name G_GNUC_UNUSED,
+               const gchar  *value,
+               gpointer      data,
+               GError      **error G_GNUC_UNUSED)
+{
+    OptionValues *option_values;
+
+    option_values = (OptionValues*) data;
+
+    if (option_values->program_filename)
+    {
+        g_set_error (error,
+                     G_OPTION_ERROR,
+                     G_OPTION_ERROR_FAILED,
+                     "Can't use both --program and provide a FILE");
+
+        return FALSE;
+    }
+
+    option_values->program = g_strdup (value);
+
+    return TRUE;
+}
+
+/**
  * parse_output_filename:
  *
  * Parse the argument for the --output-file option.
@@ -193,6 +224,16 @@ parse_program_filename (const gchar  *option_name G_GNUC_UNUSED,
 
     option_values = (OptionValues*) data;
 
+    if (option_values->program)
+    {
+        g_set_error (error,
+                     G_OPTION_ERROR,
+                     G_OPTION_ERROR_FAILED,
+                     "Can't use both --program and provide a FILE");
+
+        return FALSE;
+    }
+
     if (option_values->program_filename)
     {
         g_set_error (error,
@@ -227,6 +268,15 @@ parse_program_filename (const gchar  *option_name G_GNUC_UNUSED,
  */
 static GOptionEntry option_entries[] =
 {
+    {
+        "program",
+        'p',
+        0,
+        G_OPTION_ARG_CALLBACK,
+        parse_program,
+        "Execute PROGRAM",
+        "PROGRAM"
+    },
     {
         "store",
         's',

@@ -23,6 +23,11 @@ the program, and allocates memory cells as they are needed.
 
 # OPTIONS
 
+`-p`, `--program`=_PROGRAM_
+:   Execute _PROGRAM_. This can only be used if a _FILE_ containing a
+    Brainfuck program has not been provided on the command line after all
+    options.
+
 `-s`, `--store`=_WHAT_
 :   Choose the value to store in the tape when the end of input is reached.
     _WHAT_ defaults to \`zero\' (store a zero); other possible values are

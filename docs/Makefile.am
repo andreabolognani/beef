@@ -4,10 +4,10 @@ nodist_man_MANS = \
 	beef.1 \
 	$(NULL)
 
-%.1: %.1.markdown
+%.1: %.1.rst
 	$(AM_V_GEN) \
-	$(PANDOC) -s -w man -o $@.tmp $< \
-	&& mv -f $@.tmp $@
+	$(RST2MAN) $< $@-tmp \
+	&& mv -f $@-tmp $@
 
 CLEANFILES = \
 	$(nodist_man_MANS) \

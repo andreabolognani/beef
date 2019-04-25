@@ -11,4 +11,4 @@ Beef depends on the following libraries and programs:
 
   * the pkg-config script;
 
-  * pandoc.
+  * rst2man.

@@ -24,10 +24,10 @@ AC_PROG_CC
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 
-AC_PATH_PROG([PANDOC], [pandoc])
-if test -z "$PANDOC"
+AC_PATH_PROGS([RST2MAN], [rst2man rst2man-3 rst2man.py])
+if test -z "$RST2MAN"
 then
-    AC_MSG_ERROR([pandoc not found])
+    AC_MSG_ERROR([rst2man not found])
 fi
 
 dnl **********************
@@ -143,7 +143,7 @@ dnl ***************************
 
 AC_CONFIG_FILES([Makefile
                  docs/Makefile
-                 docs/beef.1.markdown
+                 docs/beef.1.rst
                  src/Makefile])
 
 AC_OUTPUT

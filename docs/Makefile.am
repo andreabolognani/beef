@@ -9,6 +9,6 @@ nodist_man_MANS = \
 	$(PANDOC) -s -w man -o $@.tmp $< \
 	&& mv -f $@.tmp $@
 
-DISTCLEANFILES = \
+CLEANFILES = \
 	$(nodist_man_MANS) \
 	$(NULL)

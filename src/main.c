@@ -135,7 +135,7 @@ main (gint    argc,
     }
     else
     {
-        g_printerr ("Usage: %s [OPTION...] FILE\n", g_get_prgname ());
+        g_printerr ("Usage: %s [OPTION?] FILE\n", g_get_prgname ());
 
         return 1;
     }

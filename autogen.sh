@@ -29,4 +29,6 @@ run "$AUTOHEADER"
 run "$AUTOCONF"
 run "$AUTOMAKE"
 
+./configure "$@" || exit $?
+
 exit 0

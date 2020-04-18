@@ -3,6 +3,15 @@ AC_INIT([Beef], [1.0.2], [eof@kiyuko.org], [])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_HEADERS([config.h])
 
+dnl *****************************
+dnl *** Reject in-tree builds ***
+dnl *****************************
+
+if test "$srcdir" = "."
+then
+    AC_MSG_ERROR([Build directory must be different from source directory])
+fi
+
 AM_INIT_AUTOMAKE([foreign])
 AM_SILENT_RULES([yes])
 

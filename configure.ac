@@ -22,12 +22,12 @@ dnl **********************
 
 GLIB_REQUIRED=2.32.0
 
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_REQUIRED
-                        gobject-2.0 >= $GLIB_REQUIRED
-                        gio-2.0 >= $GLIB_REQUIRED)
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= $GLIB_REQUIRED
+                           gobject-2.0 >= $GLIB_REQUIRED
+                           gio-2.0 >= $GLIB_REQUIRED])
 
-AC_SUBST(GLIB_CFLAGS)
-AC_SUBST(GLIB_LIBS)
+AC_SUBST([GLIB_CFLAGS])
+AC_SUBST([GLIB_LIBS])
 
 dnl ************************
 dnl *** Check for Cattle ***
@@ -35,10 +35,10 @@ dnl ************************
 
 CATTLE_REQUIRED=1.2.0
 
-PKG_CHECK_MODULES(CATTLE, cattle-1.0 >= $CATTLE_REQUIRED)
+PKG_CHECK_MODULES([CATTLE], [cattle-1.0 >= $CATTLE_REQUIRED])
 
-AC_SUBST(CATTLE_CFLAGS)
-AC_SUBST(CATTLE_LIBS)
+AC_SUBST([CATTLE_CFLAGS])
+AC_SUBST([CATTLE_LIBS])
 
 dnl **************************
 dnl *** Check for readline ***
@@ -82,8 +82,8 @@ then
     LDFLAGS=$old_LDFLAGS
 fi
 
-AC_SUBST(READLINE_CFLAGS)
-AC_SUBST(READLINE_LIBS)
+AC_SUBST([READLINE_CFLAGS])
+AC_SUBST([READLINE_LIBS])
 
 dnl ***********************************
 dnl *** Enable compilation warnings ***
@@ -91,7 +91,7 @@ dnl ***********************************
 
 WARN_CFLAGS="-Wall -Wextra"
 
-AC_SUBST(WARN_CFLAGS)
+AC_SUBST([WARN_CFLAGS])
 
 dnl ***************************
 dnl *** Create output files ***

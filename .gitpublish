@@ -1,0 +1,4 @@
+[gitpublishprofile "default"]
+base = master
+to = eof@kiyuko.org
+prefix = beef PATCH

@@ -6,12 +6,12 @@ SUBDIRS = \
 	$(NULL)
 
 dist_doc_DATA = \
-	AUTHORS.markdown \
+	AUTHORS.rst \
 	COPYING \
-	NEWS.markdown \
-	README.markdown \
+	NEWS.rst \
+	README.rst \
 	$(NULL)
 
 EXTRA_DIST = \
-	INSTALL.markdown \
+	INSTALL.rst \
 	$(NULL)

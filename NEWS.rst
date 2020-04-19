@@ -1,24 +1,31 @@
+Release notes for Beef
+======================
+
+This document briefly describes the user-visible changes introduced
+in each release of Beef.
+
+
 Beef 1.0.2 (2017-01-11)
 -----------------------
 
-* Portability fixes
+* Portability fixes.
 
-  - Compiling Beef on platforms that ship outdated readline
-    releases, install third-party libraries under non-default
-    paths or use Clang as the compiler should now require no
-    source patching. FreeBSD, for example, does all three
+  - Compiling Beef on platforms that ship outdated readline releases,
+    install third-party libraries under non-default paths or use
+    Clang as the compiler should now require no source patching.
+    FreeBSD, for example, does all three.
 
-* Enable compiler warnings
+* Enable compiler warnings.
 
-  - Fix code quality issues uncovered by doing so
+  - Fix code quality issues uncovered by doing so.
 
-* Build system cleanups and improvements
+* Build system cleanups and improvements.
 
 
 Beef 1.0.1 (2014-10-21)
 -----------------------
 
-* Port to Cattle 1.2.0:
+* Port to Cattle 1.2.0.
 
   - Improved portability: Beef should now run on most CPU
     architectures (tested on x86_64 and ARMv7).
@@ -51,7 +58,9 @@ Beef 0.0.6 (2007-02-01)
 Beef 0.0.5 (2006-04-02)
 -----------------------
 
-* Improve code loader and runner (code taken from ``bf.c`` by Erik Bosman).
+* Improve code loader and runner
+
+  - Code taken from ``bf.c`` by Erik Bosman).
 
 * Make build system easier to tweak.
 

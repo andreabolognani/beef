@@ -1,4 +1,10 @@
-Lead Developer
---------------
+Beef authors
+============
 
-Andrea Bolognani  <eof@kiyuko.org>
+This is the list of people working on Beef.
+
+
+Lead developers
+---------------
+
+* Andrea Bolognani <eof@kiyuko.org>

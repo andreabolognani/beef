@@ -5,6 +5,22 @@ This document briefly describes the user-visible changes introduced
 in each release of Beef.
 
 
+Beef 1.2.0 (2020-04-20)
+-----------------------
+
+* Add ``--program`` option.
+
+  - This option can be used to embed a Brainfuck program directly
+    into Beef's command line instead of loading it from a file.
+
+* Improve readline detection.
+
+  - The build system will now detect readline automatically even on
+    platform such as FreeBSD and macOS.
+
+* Various cleanups and improvements.
+
+
 Beef 1.0.2 (2017-01-11)
 -----------------------
 

@@ -1,4 +1,4 @@
-AC_INIT([Beef], [1.0.2],
+AC_INIT([Beef], [1.2.0],
         [eof@kiyuko.org], [], [https://kiyuko.org/software/beef])
 
 AC_CONFIG_SRCDIR([configure.ac])

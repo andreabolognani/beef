@@ -12,7 +12,7 @@ then
     AC_MSG_ERROR([Build directory must be different from source directory])
 fi
 
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([foreign tar-pax dist-xz no-dist-gzip])
 AM_SILENT_RULES([yes])
 
 dnl ***********************

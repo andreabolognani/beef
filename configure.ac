@@ -1,20 +1,24 @@
-AC_INIT([Beef], [1.0.2], [eof@kiyuko.org], [beef])
-AC_CONFIG_SRCDIR([Makefile.am])
-AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE
+AC_INIT([Beef], [1.0.2], [eof@kiyuko.org], [])
 
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+AC_CONFIG_SRCDIR([configure.ac])
+AC_CONFIG_HEADERS([config.h])
+
+AM_INIT_AUTOMAKE([foreign])
+AM_SILENT_RULES([yes])
 
 dnl ***********************
 dnl *** Check for tools ***
 dnl ***********************
 
 AC_PROG_CC
-AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
+AC_PROG_INSTALL
 
 AC_PATH_PROG([PANDOC], [pandoc])
-test "$PANDOC" || AC_MSG_ERROR([pandoc not found])
+if test -z "$PANDOC"
+then
+    AC_MSG_ERROR([pandoc not found])
+fi
 
 dnl **********************
 dnl *** Check for GLib ***

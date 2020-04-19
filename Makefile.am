@@ -1,7 +1,7 @@
 NULL =
 
 SUBDIRS = \
-	doc \
+	docs \
 	src \
 	$(NULL)
 

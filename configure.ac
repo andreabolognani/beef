@@ -142,8 +142,8 @@ dnl *** Create output files ***
 dnl ***************************
 
 AC_CONFIG_FILES([Makefile
-                 doc/Makefile
-                 doc/beef.1.markdown
+                 docs/Makefile
+                 docs/beef.1.markdown
                  src/Makefile])
 
 AC_OUTPUT

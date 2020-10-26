@@ -104,7 +104,7 @@ The Brainfuck instructions are:
 
 **,**
 
-  Read a character from the input and store it in che current cell.
+  Read a character from the input and store it in the current cell.
 
 **.**
 
